@@ -41,7 +41,7 @@ https://cs50.harvard.edu/ai/2020/notes/0/
     - otherwise, remove a node from the frontier (work on the node - for example in the beginning the frontier contains just one node)
     - if node contains goal state, return the solution
     - otherwise, expand the node (look at all of the neighbors of that node), add resulting nodes to the frontier
-- Sometimes an infite loop can appear if for example if node A points to node B and node B points to node A as well
+- <b>Sometimes an infite loop can appear if for example if node A points to node B and node B points to node A as well</b>
 
 ### Revised approach
 
@@ -55,3 +55,7 @@ https://cs50.harvard.edu/ai/2020/notes/0/
     - expand the node, add resulting nodes to the frontier if they aren't already in the frontier or in the explored set
 - It's also important how the frontier is structured, how we add and remove nodes from this data structure
     - stack - data structure that is a last-in first-out (LIFO) data type
+- <b>Depth-first search (DFS) - search algorithm that always expands the deepest node in the frontier</b>
+    - <b>uses a stack for the frontier</b>
+- <b>Breadth-first search (BFS) - search algorithm that always expands the shallowest node in the frontier
+    - <b>uses a queue (first-in first-out data type - FIFO) for the frontier</b>
