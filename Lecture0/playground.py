@@ -1,4 +1,4 @@
-with open("maze1.txt") as f:
+with open("maze2.txt") as f:
     contents = f.read()
 contents = contents.splitlines()
 print(contents)

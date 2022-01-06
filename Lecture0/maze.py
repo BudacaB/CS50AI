@@ -64,6 +64,7 @@ class Maze():
                         row.append(False)
                     elif contents[i][j] == "B":
                         self.goal = (i, j)
+                        # print(self.goal)
                         row.append(False)
                     elif contents[i][j] == " ":
                         row.append(False)
@@ -119,7 +120,8 @@ class Maze():
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFrontier()
+        # frontier = StackFrontier() # for DFS
+        frontier = QueueFrontier() # for BFS
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -144,6 +146,8 @@ class Maze():
                 while node.parent is not None:
                     actions.append(node.action)
                     cells.append(node.state)
+                    # print(node.action)
+                    # print(node.state)
                     node = node.parent
                 actions.reverse()
                 cells.reverse()
@@ -217,6 +221,8 @@ m.print()
 print("Solving...")
 m.solve()
 print("States explored:", m.num_explored)
+# print(m.solution[0])
+# print(m.solution[1])
 print("Solution:")
 m.print()
 m.output_image("maze.png", show_explored=True)
