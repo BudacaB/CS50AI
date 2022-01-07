@@ -53,9 +53,27 @@ https://cs50.harvard.edu/ai/2020/notes/0/
     - if node contains goal state, return the solution
     - add the node to the explored set
     - expand the node, add resulting nodes to the frontier if they aren't already in the frontier or in the explored set
+
+### DFS and BFS
+
 - It's also important how the frontier is structured, how we add and remove nodes from this data structure
-    - stack - data structure that is a last-in first-out (LIFO) data type
-- <b>Depth-first search (DFS) - search algorithm that always expands the deepest node in the frontier</b>
-    - <b>uses a stack for the frontier</b>
-- <b>Breadth-first search (BFS) - search algorithm that always expands the shallowest node in the frontier
-    - <b>uses a queue (first-in first-out data type - FIFO) for the frontier</b>
+    - <b>Depth-first search (DFS) - search algorithm that always expands the deepest node in the frontier</b>
+        - <b>uses a stack for the frontier - data structure that is a last-in first-out (LIFO) data type</b>
+    - <b>Breadth-first search (BFS) - search algorithm that always expands the shallowest node in the frontier</b>
+        - <b>uses a queue (first-in first-out data type - FIFO) for the frontier</b>
+
+### Types of search algorithms
+
+- uninformed search - search strategy that uses no problem-specific knowledge -> DFS and BFS
+- informed search - search strategy that uses problem-specific knowledge to find solutions more efficiently
+    - e.g. for a maze, this problem specific knowledge is something like: being in a square that's geographically closer to the goal is better than being in a square that's geographically further away
+    - this we can only know by thinking about this problem and reasoning about what knowledge might be helpful for our AI agent to know a little something about
+
+### Types of informed search algorithms
+
+- greedy best-first search (GBFS) - search algorithm that expands the node that is closesd to the goal, as estimated by a heuristic function <em>h(n)</em>
+- heuristic function - takes a state as input and returns an estimate of how close we are to the goal
+    - e.g. for a maze, it can estimate based on (x, y) coordinates if a square is closer to the goal than another
+    - it can use the <b>'Manhattan distance'</b> for a maze as the heuristic type - ignoring the walls to 'relax' the problem, how many squares / steps, vertically and horizontally (not diagonally), are needed to get to the goal from a specific square
+    - it isn't a guarantee of how many steps it's going to take, it's only an estimation
+- we will always explore the node that has the smallest value for the heuristic function - if it has the smallest Manhattan distance to the goal
