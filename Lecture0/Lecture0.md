@@ -71,9 +71,20 @@ https://cs50.harvard.edu/ai/2020/notes/0/
 
 ### Types of informed search algorithms
 
-- greedy best-first search (GBFS) - search algorithm that expands the node that is closesd to the goal, as estimated by a heuristic function <em>h(n)</em>
-- heuristic function - takes a state as input and returns an estimate of how close we are to the goal
-    - e.g. for a maze, it can estimate based on (x, y) coordinates if a square is closer to the goal than another
-    - it can use the <b>'Manhattan distance'</b> for a maze as the heuristic type - ignoring the walls to 'relax' the problem, how many squares / steps, vertically and horizontally (not diagonally), are needed to get to the goal from a specific square
-    - it isn't a guarantee of how many steps it's going to take, it's only an estimation
-- we will always explore the node that has the smallest value for the heuristic function - if it has the smallest Manhattan distance to the goal
+- Greedy best-first search (GBFS) 
+    - search algorithm that expands the node that is closesd to the goal, as estimated by a heuristic function <em>h(n)</em>
+    - 'greedy' because it selects the best option locally, which isn't necessarily optimal in the big picture
+    - heuristic function - takes a state as input and returns an estimate of how close we are to the goal
+        - e.g. for a maze, it can estimate based on (x, y) coordinates if a square is closer to the goal than another
+        - it can use the <b>'Manhattan distance'</b> for a maze as the heuristic type - ignoring the walls to 'relax' the problem, how many squares / steps, vertically and horizontally (not diagonally), are needed to get to the goal from a specific square
+        - it isn't a guarantee of how many steps it's going to take, it's only an estimation
+    - we will always explore the node that has the smallest value for the heuristic function - if it has the smallest Manhattan distance to the goal
+- A* search
+    - search algorithm that expands the node with the lowest value of <em>g(n) + h(n)</em>
+        - g(n) = cost to reach node
+        - h(n) = estimated cost to goal
+    - optimal if:
+        - <em>h(n)</em> is admissible (never overestimates the true cost - get it exactly right or underestimate), and
+        - <em>h(n)</em> is consistent (for every node <em>n</em> and successor <em>n'</em> with step cost <em>c, h(n) <= h(n') + c</em>)
+    - it does have a tendency to use quite a bit of memory
+- Search algorithms tend to be optimised for different use cases but it's choosing the heuristic that can be the interesting challenge
