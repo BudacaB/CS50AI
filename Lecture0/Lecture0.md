@@ -88,3 +88,18 @@ https://cs50.harvard.edu/ai/2020/notes/0/
         - <em>h(n)</em> is consistent (for every node <em>n</em> and successor <em>n'</em> with step cost <em>c, h(n) <= h(n') + c</em>)
     - it does have a tendency to use quite a bit of memory
 - Search algorithms tend to be optimised for different use cases but it's choosing the heuristic that can be the interesting challenge
+
+### Adversarial Search
+
+- A case when there isn't a single agent, and each agent tried to find the solution while stopping the other agent from finding it - e.g. games like tic-tac-toe
+- Minimax algorithm - works very well for these deterministic games where there are two players, for the example of tic-tac-toe
+    - the outcomes are represented mathematically as -1 if O wins, 0 if it's a draw and 1 if X wins
+    - MAX (X) aims to maximize score
+    - MIN (O) aims to minimize the score 
+    - Game:
+        - S<sub>0</sub>: initial state
+        - PLAYER(s): function that returns which players to move in state <em>s</em>
+        - ACTIONS(s): returns legal moves in state <em>s</em>
+        - RESULT(s, a): returns state after action <em>a</em> taken in state <em>s</em>
+        - TERMINAL(s): checks if state <em>s</em> is a terminal state - a player has gotten three in a row or all of the squares of the tic-tac-toe board are filled
+        - UTILITY(s): final numerical value for terminal state <em>s</em> - if X wins the game, value of 1, if O wins the game, value of -1, if nobody has won the game, value of 0
