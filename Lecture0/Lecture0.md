@@ -103,3 +103,42 @@ https://cs50.harvard.edu/ai/2020/notes/0/
         - RESULT(s, a): returns state after action <em>a</em> taken in state <em>s</em>
         - TERMINAL(s): checks if state <em>s</em> is a terminal state - a player has gotten three in a row or all of the squares of the tic-tac-toe board are filled
         - UTILITY(s): final numerical value for terminal state <em>s</em> - if X wins the game, value of 1, if O wins the game, value of -1, if nobody has won the game, value of 0
+    - pseudocode:
+        - given a state <em>s</em>:
+            - MAX picks action <em>a</em> in ACTIONS(s) that produces highest value of MIN-VALUE(RESULT(s, a)) - the possible values that the MIN player will pick when trying to minimize the result of the action picked by the MAX player
+            - MIN picks action in <em>a</em> in ACTIONS(s) that produces smallest value of MAX-VALUE(RESULT(s, a)) - doing the same thing but backwards, considering what the MAX player would choose to do
+
+            ```
+            function MAX-VALUE(state):
+                if TERMINAL(state):
+                    return UTILITY(state)
+                v = -∞
+                for action in ACTIONS(state):
+                    v = MAX(v, MIN-VALUE(RESULT(state, action)))
+                return v
+            ```
+
+            ```
+            function MIN-VALUE(state):
+                if TERMINAL(state):
+                    return UTILITY(state)
+                v = ∞
+                for action in ACTIONS(state):
+                    v = MIN(v, MAX-VALUE(RESULT(state, action)))
+                return v
+            ```
+
+### Optimizations for Minimax
+
+- Alpha-Beta Pruning
+    - For example, for 3 possible actions for the MAX player, if one can have a possible maximum value of 4, as the mininum value that the MIN player will pick for its next possible actions, and the next possible immediate action can have a possible maximum value of 3 based on the first possible next action from that state, no need to consider the other possible next actions, the MIN player would choose a value smaller than 4 anyway based on that 3
+    - alpha and beta are the two values to keep track, the best you can do so far and the worst that you can do so far
+    - pruning is the idea that if I have a big, long, deep search tree, I might be able to search more efficiently if I don't need to search through everything, if I can remove some of the nodes
+- Depth-Limited Minimax
+    - for example the more complex a game is, the more possible games there can be and the harder it gets for one computer to process all of those - 255168 possible tic-tac-toe games ; 280 billion possible games of chess after 4 moves for each player ; 10<sup>29000</sup> total possible chess games
+    - normally Minimax is depth-unlimited, we just keep going layer after layer, move after move, until the end of the game
+    - depth-limited Minimax is going to look ahead only for a certain number of moves, e.g. 10, 12 etc., but after that point we will stop and not look at additional moves that might come after that just because it would be computationally intractable to consider all those possible options
+    - depth-limited Minimax still needs a way to assign a score to that last game board or game state it looks at to figure out what its current value is - we need to add an <b>evaluation function</b>
+    - evaluation function - function that estimates the expected utility of the game from a given state
+        - e.g. in a game of chess, if a game value of 1 means that 'white' wins and 0 means it's a draw and -1 means that 'black' wins, a score of 0.8 means 'white' is very likely to win, but certainly not guaranteed - the evaluation function estimates how good the game state happens to be
+        - depending on how good the evaluation function is, that's ultimately what's going to constraint how good the AI is going to be
