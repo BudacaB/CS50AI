@@ -38,5 +38,11 @@ with open(f"small/stars.csv", encoding="utf-8") as f:
         except KeyError:
             pass
 
-person_ids = list(names.get("tom cruise".lower()))
-print(person_ids[0])
+movie_ids = people['102']['movies']
+neighbors = set()
+for movie_id in movie_ids:
+    for person_id in movies[movie_id]["stars"]:
+        neighbors.add((movie_id, person_id))
+
+print(people['102']['movies'])
+print(neighbors)
