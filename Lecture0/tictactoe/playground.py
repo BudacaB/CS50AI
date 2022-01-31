@@ -1,13 +1,14 @@
 import copy
+from queue import Empty
 
 
 X = "X"
 O = "O"
 EMPTY = None
 
-board = [[X, O, EMPTY],
-        [X, X, O],
-        [X, O, EMPTY]]
+board = [[X, O, X],
+        [O, X, O],
+        [X, EMPTY, EMPTY]]
 
 def player(board):
     """
@@ -73,23 +74,44 @@ def winner(board):
                         return X
                     elif board[row_idx + 1][cell_idx - 1] and board[row_idx + 2][cell_idx - 2] == X:
                         return X
-                        # TODO
+            if row_idx == 1 and cell_idx == 0:
+                if cell == X:
+                    if board[row_idx][cell_idx + 1] == X and board[row_idx][cell_idx + 2] == X:
+                        return X
+            if row_idx == 2 and cell_idx == 0: 
+                if cell == X:
+                    if board[row_idx][cell_idx + 1] == X and board[row_idx][cell_idx + 2] == X:
+                        return X
+    return None
 
-
-# def winner(board):
-#     """
-#     Returns the winner of the game, if there is one.
-#     """
-#     x_positions = set()
-#     zero_positions = set()
-#     for row_idx, row in enumerate(board):
-#         for cell_idx, cell in enumerate(row):
-#                 if cell == X:
-#                     x_positions.add((row_idx, cell_idx))
-#                 elif cell == O:
-#                     zero_positions.add((row_idx, cell_idx))
-#     return x_positions
-
-
+def winner(board):
+    """
+    Returns the winner of the game, if there is one.
+    """
+    if board[0][0] == board[0][1] == board[0][2]:
+        if board[0][0] != EMPTY:
+            return board[0][0]
+    if board[0][0] == board[1][0] == board[2][0]:
+        if board[0][0] != EMPTY:
+            return board[0][0]
+    if board[0][0] == board[1][1] == board[2][2]:
+        if board[0][0] != EMPTY:
+            return board[0][0]
+    if board[0][1] == board[1][1] == board[2][1]:
+        if board[0][1] != EMPTY:
+            return board[0][1] 
+    if board[0][2] == board[1][2] == board[2][2]:
+        if board[0][2] != EMPTY:
+            return board[0][2] 
+    if board[0][2] == board[1][1] == board[2][0]:
+        if board[0][2] != EMPTY:
+            return board[0][2]
+    if board[1][0] == board[1][1] == board[1][2]:
+        if board[1][0] != EMPTY:
+            return board[1][0]
+    if board[2][0] == board[2][1] == board[2][2]:
+        if board[2][0] != EMPTY:
+            return board[2][0]
+    return None
 
 print(winner(board))
