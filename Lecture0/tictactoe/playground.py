@@ -1,4 +1,5 @@
 import copy
+from pickle import TRUE
 from queue import Empty
 
 
@@ -7,8 +8,8 @@ O = "O"
 EMPTY = None
 
 board = [[X, O, X],
-        [O, X, O],
-        [X, EMPTY, EMPTY]]
+        [X, X, O],
+        [O, O, O]]
 
 def player(board):
     """
@@ -48,41 +49,6 @@ def result(board, action):
     board_copy = copy.deepcopy(board)
     board_copy[action[0]][action[1]] = player(board)
     return board_copy
-    
-
-def winner(board):
-    """
-    Returns the winner of the game, if there is one.
-    """
-    for row_idx, row in enumerate(board):
-        for cell_idx, cell in enumerate(row):
-            if row_idx == 0 and cell_idx == 0:
-                if cell == X:
-                    if board[row_idx][cell_idx + 1] == X and board[row_idx][cell_idx + 2] == X:
-                        return X
-                    elif board[row_idx + 1][cell_idx] == X and board[row_idx + 2][cell_idx] == X:
-                        return X
-                    elif board[row_idx + 1][cell_idx + 1] == X and board[row_idx + 2][cell_idx + 2] == X:
-                        return X
-            if row_idx == 0 and cell_idx == 1:
-                if cell == X:
-                    if board[row_idx + 1][cell_idx] == X and board[row_idx + 2][cell_idx] == X:
-                        return X
-            if row_idx == 0 and cell_idx == 2:
-                if cell == X:
-                    if board[row_idx + 1][cell_idx] == X and board[row_idx + 2][cell_idx] == X:
-                        return X
-                    elif board[row_idx + 1][cell_idx - 1] and board[row_idx + 2][cell_idx - 2] == X:
-                        return X
-            if row_idx == 1 and cell_idx == 0:
-                if cell == X:
-                    if board[row_idx][cell_idx + 1] == X and board[row_idx][cell_idx + 2] == X:
-                        return X
-            if row_idx == 2 and cell_idx == 0: 
-                if cell == X:
-                    if board[row_idx][cell_idx + 1] == X and board[row_idx][cell_idx + 2] == X:
-                        return X
-    return None
 
 def winner(board):
     """
@@ -114,4 +80,34 @@ def winner(board):
             return board[2][0]
     return None
 
-print(winner(board))
+def terminal(board):
+    """
+    Returns True if game is over, False otherwise.
+    """
+    board_unfilled = False
+    for row in board:
+        for cell in row:
+            if cell == EMPTY:
+                board_unfilled = True
+    if board_unfilled and winner(board) == None:
+        return False
+    return True
+
+def utility(board):
+    """
+    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
+    """
+    if winner(board) == X:
+        return 1
+    elif winner(board) == O:
+        return -1
+    else:
+        return 0
+
+def minimax(board):
+    """
+    Returns the optimal action for the current player on the board.
+    """
+    if terminal(board) == True:
+        return None
+    # TODO
