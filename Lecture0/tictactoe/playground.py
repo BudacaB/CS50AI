@@ -1,15 +1,13 @@
 import copy
-from pickle import TRUE
-from queue import Empty
 
 
 X = "X"
 O = "O"
 EMPTY = None
 
-board = [[X, O, X],
-        [X, X, O],
-        [O, O, O]]
+board = [[EMPTY, X, O],
+        [O, X, EMPTY],
+        [X, EMPTY, O]]
 
 def player(board):
     """
@@ -110,4 +108,41 @@ def minimax(board):
     """
     if terminal(board) == True:
         return None
-    # TODO
+    if player(board) == X:
+        return max_value(board)['action']
+    elif player(board) == O:
+        return min_value(board)['action']
+
+
+def max_value(board):
+    outcome = {'v': -1, 'action': None}
+    if terminal(board) == True:
+        outcome['v'] = utility(board)
+        return outcome
+    # v = -1
+    for action in actions(board):
+        # v = max(v, min_value(result(board, action)))
+        if outcome['v'] < min_value(result(board, action))['v']:
+            outcome['action'] = action
+        outcome['v'] = max(outcome['v'], min_value(result(board, action))['v'])
+    return outcome
+    # return v
+
+def min_value(board):
+    outcome = {'v': 1, 'action': None}
+    if terminal(board) == True:
+        outcome['v'] = utility(board)
+        return outcome
+    # v = 1
+    for action in actions(board):
+        # v = min(v, max_value(result(board, action)))
+        if outcome['v'] > max_value(result(board, action))['v']:
+            outcome['action'] = action
+        outcome['v'] = min(outcome['v'], max_value(result(board, action))['v'])
+    return outcome
+    # return v
+
+print(minimax(board))
+# print(min_value(board))
+
+    # (0, 0), (2, 1), (1, 2)
