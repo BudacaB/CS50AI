@@ -131,24 +131,26 @@ def minimax(board):
 
 
 def max_value(board):
-    outcome = {'v': -1, 'action': None}
+    outcome = {'v': -1}
     if terminal(board) == True:
         outcome['v'] = utility(board)
         return outcome
     for action in actions(board):
-        if outcome['v'] < min_value(result(board, action))['v']:
+        min_choice = min_value(result(board, action))['v']
+        if outcome['v'] < min_choice:
             outcome['action'] = action
-        outcome['v'] = max(outcome['v'], min_value(result(board, action))['v'])
+        outcome['v'] = max(outcome['v'], min_choice)
     return outcome
 
 
 def min_value(board):
-    outcome = {'v': 1, 'action': None}
+    outcome = {'v': 1}
     if terminal(board) == True:
         outcome['v'] = utility(board)
         return outcome
     for action in actions(board):
-        if outcome['v'] > max_value(result(board, action))['v']:
+        max_choice = max_value(result(board, action))['v']
+        if outcome['v'] > max_choice:
             outcome['action'] = action
-        outcome['v'] = min(outcome['v'], max_value(result(board, action))['v'])
+        outcome['v'] = min(outcome['v'], max_choice)
     return outcome
