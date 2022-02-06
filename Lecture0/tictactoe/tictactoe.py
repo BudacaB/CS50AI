@@ -131,26 +131,30 @@ def minimax(board):
 
 
 def max_value(board):
-    outcome = {'v': -1}
+    outcome = {'v': -1} # use a dict for value and action
     if terminal(board) == True:
         outcome['v'] = utility(board)
         return outcome
     for action in actions(board):
         min_choice = min_value(result(board, action))['v']
         if outcome['v'] < min_choice:
-            outcome['action'] = action
+            outcome['action'] = action # update action
         outcome['v'] = max(outcome['v'], min_choice)
+        if outcome['v'] == 1: # prune if a node is 'as good as it gets'
+            break
     return outcome
 
 
 def min_value(board):
-    outcome = {'v': 1}
+    outcome = {'v': 1} # use a dict for value and action
     if terminal(board) == True:
         outcome['v'] = utility(board)
         return outcome
     for action in actions(board):
         max_choice = max_value(result(board, action))['v']
         if outcome['v'] > max_choice:
-            outcome['action'] = action
+            outcome['action'] = action # update action
         outcome['v'] = min(outcome['v'], max_choice)
+        if outcome['v'] == -1: # prune if a node is 'as good as it gets'
+            break
     return outcome

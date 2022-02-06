@@ -118,6 +118,7 @@ def max_value(board):
     outcome = {'v': -1}
     if terminal(board) == True:
         outcome['v'] = utility(board)
+        print('utility outcome max', outcome)
         return outcome
     print(actions(board))
     for action in actions(board):
@@ -129,13 +130,16 @@ def max_value(board):
             # print('min_choice is ', min_choice)
             # print('outcome action is ', outcome['action'])
         outcome['v'] = max(outcome['v'], min_choice)
-        print('outcome', outcome)
+        print('outcome max', outcome)
+        if outcome['v'] == 1:
+            break
     return outcome
 
 def min_value(board):
     outcome = {'v': 1}
     if terminal(board) == True:
         outcome['v'] = utility(board)
+        print('utility outcome min', outcome)
         return outcome
     for action in actions(board):
         print('min action is ', action)
@@ -143,6 +147,9 @@ def min_value(board):
         if outcome['v'] > max_choice:
             outcome['action'] = action
         outcome['v'] = min(outcome['v'], max_choice)
+        print('outcome min', outcome)
+        if outcome['v'] == -1:
+            break
     return outcome
 
 print(minimax(board))
