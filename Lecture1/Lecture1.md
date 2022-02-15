@@ -1,4 +1,4 @@
-## Knowledge
+# Knowledge
 
 https://cs50.harvard.edu/ai/2020/notes/1/
 
@@ -6,7 +6,7 @@ https://cs50.harvard.edu/ai/2020/notes/1/
 
 <b>knowledge-based agents</b> - agents that reason by operating on internal representations of knowledge
 
-### Reasoning based on knowledge
+## Reasoning based on knowledge
 
 <br>
 Example of 3 facts inside a knowledge base:
@@ -20,12 +20,12 @@ We can conclude or draw these inferences:
 - Harry did not visit Hagrid today
 - It rained today
 
-### Propositional Logic
+## Propositional Logic
 
 - based on a logic of propositions, or statements about the world
 - sentence - an assertion about the world in a knowledge representation language
 
-### Proposition Symbols
+## Proposition Symbols
 
 - each symbol can represent some fact or sentence about the world, e.g.:
     - P - 'it is raining'
@@ -33,7 +33,7 @@ We can conclude or draw these inferences:
     - R - ...
 - in addition to just having these individual facts about the world, we want some way to connect these propositional symbols together in order to reason more complexly about other facts that might exist inside of the world in which we're reasoning
 
-### Logical Connectives
+## Logical Connectives
 
 - not - negation - ¬ (or ~) A
 - and - conjunction - A ^ B
@@ -105,9 +105,9 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
 - the AI would use that info in the knowledge base to be able to draw conclusions about the rest of the world
 - to understand those conclusions we need to introduce one more idea, one more symbol
 
-### Entailment
+## Entailment
 
-α ⊨ β - alpha entails beta (alpha and beta are sentences in propositional logic)
+α |= β - alpha entails beta (alpha and beta are sentences in propositional logic)
 
 - in every model in which sentence α is true, sentence β is also true
 - E.g. If alpha is something like 'I know that it is a Tuesday in January', then a reasonable beta might be something like, 'I know that it is January' - because in all worlds, where it is a Tuesday in January, I know for sure that it must be January, just by definition.
@@ -130,4 +130,40 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
         - by implication, if the left side is true then the right side must also be true
         - <b>R - Harry will go for a run</b>
 
-### Inference Algorithms
+## Inference Algorithms
+
+- Does KB |= α ? (using the knowledge that we have access to, can we conclude that this sentence α is true?)
+- There are a couple of algorithms for checking this, and perhaps one of the simplest is known as model checking
+
+
+### Model checking
+
+- Model - just some assignment of all of the propositional symbols inside of our language to a truth value, true or false
+    - like a possible world ; there are many possible worlds where different things might be true or false and we can enumerate all of them - the <b>model checking algorithm</b> does exactly that
+- To determine if KB |= α:
+    - enumerate all possible models
+    - if in every model where KB is true, α is also true, <b>then KB entails α</b>
+    - otherwise, KB does not entail α
+- Example:
+    - Description:
+        - P: It is a Tuesday
+        - Q: It is raining
+        - R: Harry will go for a run
+    - KB: 
+        - (P ^ ~Q) -> R
+        - P
+        - ~Q
+    - Query: R (the thing we want to ask - α - is it entailed that Hary will go for a run)
+    - We have 2<sup>3</sup> possible models
+    - In which of this worlds is our KB true
+
+| P | Q | R | KB |
+| ---- | ----- | ----- | ----- |
+| false |  false | false | false |
+| false | false | true | false |
+| false | true | false | false |
+| false | true | true | false |
+| true |  false | false | false |
+| true | false | true | true |
+| true | true | false | false |
+| true | true | true | false |
