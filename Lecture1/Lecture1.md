@@ -20,7 +20,7 @@ We can conclude or draw these inferences:
 - Harry did not visit Hagrid today
 - It rained today
 
-## Propositional Logic
+## Propositional Logic / Logical deduction
 
 - based on a logic of propositions, or statements about the world
 - sentence - an assertion about the world in a knowledge representation language
@@ -167,3 +167,10 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
 | true | false | true | true |
 | true | true | false | false |
 | true | true | true | false |
+
+## Knowledge Engineering
+
+- If confronted with a problem where some sort of logical deduction can be used in order to try to solve it, you might try thinking about what propositional symbols you might need in order to represent that information, and what statements and propositional logic you might use to encode that info which you know
+- This process of taking a problem and trying to figure out what propositional symbols to use in order to encode that idea, or how to represent it logically is known as knowledge engineering
+- Software engineers and AI engineers will take a problem and try to figure out how to distill it down into knowledge that is representable by a computer
+- If we can take any general purpose problem, some problem that we find in the human world and turn it into a problem that computers know how to solve, as by using any number of different variables, then we can take a computer that is able to do something like model checking or some other inference algorithm and actually figure out how to solve that problem

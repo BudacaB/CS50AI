@@ -5,6 +5,12 @@ rain = Symbol("rain") # it is raining
 hagrid = Symbol("hagrid") # Harry visited Hagrid
 dumbledore = Symbol("dumbledore") # Harry visited Dumbledore
 
-sentence = And(rain, hagrid)
+knowledge = And(
+    Implication(Not(rain), hagrid),
+    Or(hagrid, dumbledore),
+    Not(And(hagrid, dumbledore)),
+    dumbledore
+)
 
-print(sentence.formula())
+# print(knowledge.formula())
+print(model_check(knowledge, rain)) # in every world that this knowledge is true, it is raining / there is no world where this knowledge is true and it is not raining
