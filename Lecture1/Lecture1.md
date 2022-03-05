@@ -174,3 +174,25 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
 - This process of taking a problem and trying to figure out what propositional symbols to use in order to encode that idea, or how to represent it logically is known as knowledge engineering
 - Software engineers and AI engineers will take a problem and try to figure out how to distill it down into knowledge that is representable by a computer
 - If we can take any general purpose problem, some problem that we find in the human world and turn it into a problem that computers know how to solve, as by using any number of different variables, then we can take a computer that is able to do something like model checking or some other inference algorithm and actually figure out how to solve that problem
+
+### Clue (game)
+
+- Propositional symbols:
+    - people:
+        - mustard
+        - plum
+        - scarlet
+    - rooms:
+        - ballroom
+        - kitchen
+        - library
+    - weapons:
+        - knife
+        - revolver
+        - wrench
+- Knowledge:
+    - (mustard v plum v scarlet)
+    - (ballroom v kitchen v library)
+    - (knife v revolver v wrench)
+    - ~ plum (for e.g. if the plum card is in my hand, plum can't be the killer)
+    - ~ mustard v ~ library v ~ revolver (for e.g. if someone guesses that it's col. mustard, in the library with a revolver and it's wrong)
