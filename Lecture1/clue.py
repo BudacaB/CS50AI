@@ -49,4 +49,6 @@ knowledge.add(Or(
 knowledge.add(Not(plum))
 knowledge.add(Not(ballroom))
 
+print(knowledge.formula())
+
 check_knowledge(knowledge)

@@ -196,3 +196,38 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
     - (knife v revolver v wrench)
     - ~ plum (for e.g. if the plum card is in my hand, plum can't be the killer)
     - ~ mustard v ~ library v ~ revolver (for e.g. if someone guesses that it's col. mustard, in the library with a revolver and it's wrong)
+
+### Logical puzzles
+
+- Initial knowledge:
+    - Gilderoy, Minerva, Pomona and Horace each belong to a different one of the four houses: Gryffindor, Hufflepuff, Ravenclaw, and Slytherin House
+    - Gilderoy belongs to Gryffindor or Ravenclaw
+    - Pomona does not belong in Slytherin
+    - Minerva belongs to Gryffindor
+
+- Propositional symbols:
+    - GilderoyGryffindor
+    - GilderoyHufflepuff
+    - GilderoyRavenclaw
+    - GilderoySlytherin
+    - MinervaGryffindor
+    - MinervaHufflepuff
+    - MinervaRavenclaw
+    - MinervaSlytherin
+    - PomonaGryffindor
+    - PomonaHufflepuff
+    - PomonaRavenclaw
+    - PomonaSlytherin
+    - HoraceGryffindor
+    - HoraceHufflepuff
+    - HoraceRavenclaw
+    - HoraceSlytherin
+
+- Types of logical sentences we can say about the puzzle, examples:
+    - (PomonaSlytherin -> ~PomonaHufflepuff) - each one person can be in only one house
+    - (MinervaRavenclaw -> ~GilderoyRavenclaw) - each person must be in a different house
+
+- Received knowledge example:
+    - (GilderoyGryffindor v GilderoyRavenclaw)
+
+## Inference Rules
