@@ -231,3 +231,70 @@ Sample: {P=true, Q=false} - in this model, in other words in this possible world
     - (GilderoyGryffindor v GilderoyRavenclaw)
 
 ## Inference Rules
+
+- Some sort of rules that we can apply to take knowledge that already exists and translate it into new forms of knowledge
+- E.g. (using a line - above the line are premises, something that we know to be true, and anything below the line will be the conclusion that we can arrive at after applying the logic):
+
+If it is raining, then Harry is inside <br>
+It is raining
+
+```---------------------------```
+
+Harry is inside
+
+- This is called <b>Modus Ponens</b> (inference rule)
+
+α -> β <br>
+α
+
+```---------------------------```
+
+β
+
+- More examples:
+
+Harry is friends with Ron and Hermione <br>
+
+```---------------------------```
+
+Harry is friends with Hermione
+
+- This inference rule is known as <b>And Elimination</b>
+
+α ^ β <br>
+
+```---------------------------```
+
+α
+
+- More examples:
+
+It is not true that Harry didn't pass the test <br>
+
+```---------------------------```
+
+Harry passed the test
+
+- This is called <b>Double Negation Elimination</b>
+
+~ (~α) <br>
+
+```---------------------------```
+
+α
+
+- More examples:
+
+If it is raining, then Harry is inside <br>
+
+```---------------------------```
+
+It is not raining or Harry is inside
+
+- This is know as <b>Implication Elimination</b> - translate <em>if/then</em> statements into <em>or</em> statements (either alpha is true or alpha is not true; so either alpha is not true, or alpha is true, in which case beta is also true)
+
+α -> β <br>
+
+```---------------------------```
+
+~α v β
