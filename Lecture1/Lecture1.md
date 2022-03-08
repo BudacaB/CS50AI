@@ -291,10 +291,166 @@ If it is raining, then Harry is inside <br>
 
 It is not raining or Harry is inside
 
-- This is know as <b>Implication Elimination</b> - translate <em>if/then</em> statements into <em>or</em> statements (either alpha is true or alpha is not true; so either alpha is not true, or alpha is true, in which case beta is also true)
+- This is known as <b>Implication Elimination</b> - translate <em>if/then</em> statements into <em>or</em> statements (either alpha is true or alpha is not true; so either alpha is not true, or alpha is true, in which case beta is also true)
 
 α -> β <br>
 
 ```---------------------------```
 
 ~α v β
+
+- More examples:
+
+It is raining if and only if Harry is inside <br>
+
+```---------------------------```
+
+If it is raining, then Harry is inside, and if Harry is inside, then it is raining
+
+- This is known as <b>Biconditional Elimination</b> 
+
+α <-> β <br>
+
+```---------------------------```
+
+(α -> β) ^ (β -> α)
+
+- More examples:
+
+It is not true that both Harry and Ron passed the test <br>
+
+```---------------------------```
+
+Harry didn't pass the test, or Ron didn't pass the test
+
+- This type of law is knows as <b>De Morgan's Law</b> - turning an 'and' into an 'or' (the negation moves inwards and the 'and' is flipped to an 'or')
+
+~(α ^ β) <br>
+
+```---------------------------```
+
+~α v ~β
+
+- A reverse of <b>De Morgan's Law</b>:
+
+It is not true that Harry or Ron passed the test <br>
+
+```---------------------------```
+
+Harry didn't pass the test and Ron didn't pass the test
+
+<br>
+
+~(α v β) <br>
+
+```---------------------------```
+
+~α ^ ~β
+
+- <b>Distributive Property</b>
+
+(α ^ (β v γ)) <br>
+
+```---------------------------```
+
+(α ^ β) v (α ^ γ)
+
+- <b>Reverse Distributive Property</b>
+
+(α v (β ^ γ)) <br>
+
+```---------------------------```
+
+(α v β) ^ (α v γ)
+
+## Search Problems
+
+- initial state
+- actions
+- transition model
+- goal test
+- path cost function
+
+## Theorem proving
+
+- initial state: starting knowledge base
+- actions: inference rules
+- transition model: new knowledge base after inference
+- goal test: check statement we're trying to prove
+- path cost function: number of steps in proof
+
+## Resolution
+
+- A powerful inference rule
+- Resolution relies on <b>Complementary Literals</b>, two of the same atomic propositions where one is negated and the other is not, such as P and ~P.
+
+(Ron is in the Great Hall) v (Hermione is in the library) <br>
+Ron is not in the Great Hall
+
+```---------------------------```
+
+Hermione is in the library
+
+<br>
+
+P v Q <br>
+~P
+
+```---------------------------```
+
+Q
+
+- It also applies for multiple propositional symbols chained together in a single <em>clause</em>
+
+P v Q<sub>1</sub> v Q<sub>2</sub> v ... v Q<sub>n</sub> <br>
+~P
+
+```---------------------------```
+
+Q<sub>1</sub> v Q<sub>2</sub> v ... v Q<sub>n</sub>
+
+- Another property of this resolution rule:
+
+(Ron is in the Great Hall) v (Hermione is in the library) <br>
+(Ron is not in the Great Hall) v (Harry is sleeping)
+
+```---------------------------```
+
+(Hermione is in the library) v (Harry is sleeping)
+
+<br>
+
+P v Q <br>
+~P v R
+
+```---------------------------```
+
+Q v R
+
+<br>
+
+P v Q<sub>1</sub> v Q<sub>2</sub> v ... v Q<sub>n</sub> <br>
+~P v R<sub>1</sub> v R<sub>2</sub> v ... v R<sub>m</sub>
+
+```---------------------------```
+
+Q<sub>1</sub> v Q<sub>2</sub> v ... v Q<sub>n</sub> v R<sub>1</sub> v R<sub>2</sub> v ... v R<sub>m</sub>
+
+---
+
+- <b>Clause</b> - a disjunction of literals - e.g. P v Q v R
+    - disjunction - connected with 'or'
+    - conjunction - connected with 'and'
+    - literal - a propositional symbol or its opposite
+
+- <b>Conjunctive normal form (CNF)</b> - logical sentence that is a conjunction of clauses - e.g. (A v B v C) ^ (D v ~E) ^ (F v G)
+
+---
+
+## Conversion to CNF
+
+- What is the process for taking a logical formula and converting it into CNF?
+    - eliminate biconditionals
+        - turn (α <-> β) into (α -> β) ^ (β -> α)
+    - eliminate implications
+        - turn (α -> β) into turn ~α v β
