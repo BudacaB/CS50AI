@@ -454,3 +454,53 @@ Q<sub>1</sub> v Q<sub>2</sub> v ... v Q<sub>n</sub> v R<sub>1</sub> v R<sub>2</s
         - turn (α <-> β) into (α -> β) ^ (β -> α)
     - eliminate implications
         - turn (α -> β) into turn ~α v β
+    - move ~ inwards using De Morgan's Laws
+        - turn ~(α ^ β) into ~α v ~β
+    - use distributive law to distribute v wherever possible
+
+- Example (P v Q) -> R:
+    - eliminate implication ~(P v Q) v R
+    - De Morgan's Law (~P ^ ~Q) v R
+    - distributive law (~P v R) ^ (~Q v R) - this is now in <em>conjunctive normal form</em>
+
+## Inference by Resolution (using the resolution rule to draw some sort of inference)
+
+- once we have the above clauses in this form, these clauses are the inputs to the resolution inference rule - if I have two clauses where there's something that conflicts or something complementary between these two clauses, I can resolve them to get a new clause, to draw a new conclusion - we call this <b>inference by resolution</b>
+
+P v Q <br>
+~P v R
+
+```---------------------------```
+
+(Q v R)
+
+- redundancy:
+
+
+P v Q v S <br>
+~P v R v S
+
+```---------------------------```
+
+(Q v S v R v S) - factoring this to (Q v R v S)
+
+- empty clause (basis for the inference by resolution algorithm):
+
+P <br>
+~P
+
+```---------------------------```
+
+() - equivalent to just being false
+
+- How to perform inference by resolution at a high level:
+    - to determine if KB |= α:
+        - check if (KB ^ ~α) is a contradiction? - this is a common idea in CS, proving something by contradiction - by first assuming that it is false, and showing that it would be contradictory, then it must be true
+            - if so, then KB |= α
+            - otherwise, no entailment
+
+- to determine if KB |= α (resolution algorithm):
+    - convert (KB ^ ~α) to CNF
+    - keep checking to see if we can use resolution to produce a new clause
+        - if ever we produce the empty clause (equivalent to False), we have a contradiction, and <b>KB |= α</b>
+        - otherwise, if we can't add new clauses, no entailment
