@@ -504,3 +504,60 @@ P <br>
     - keep checking to see if we can use resolution to produce a new clause
         - if ever we produce the empty clause (equivalent to False), we have a contradiction, and <b>KB |= α</b>
         - otherwise, if we can't add new clauses, no entailment
+
+- Example:
+
+Does (A v B) ^ (~B v C) ^ (~C) entail A?
+
+- Solving:
+    - assume A is false and see if that leads to a contradiction
+        - (A v B) ^ (~B v C) ^ (~C) ^ (~A)
+            - (~B v C) ^ (~C) resolve to ~B
+            - (A v B) and ~B resolve to A
+            - (~A) and (A) resolve to () - false so we have a contradiction, so A is true
+
+- Instead of enumerating all the possibl worlds that we might be in in order to try to figure out in which cases is our KB true and in which cases our query is true, we can instead use this resolution algorithm, to keep trying to figure out what conclusions we can draw and see if we reach a contradiction
+    - if we reach a contradiction that tells us something about whether our knowledge actually entails the query or not
+
+## First-Order Logic
+
+- A bit more powerful than propositional logic and it makes it easier to express certain types of ideas
+- <b>Propositional Logic / propositional symbols</b>:
+    - MinervaGryffindor
+    - MinervaHufflepuff
+    - MinervaRavenclaw
+    - MinervaSlytherin
+    - ...
+- <b>First-Order Logic</b>
+    - Constant symbol:
+        - Minerva
+        - Pomona
+        - Horace
+        - Gilderoy
+        - Gryffindor
+        - Hufflepuff
+        - Ravenclaw
+        - Slytherin
+    - Predicate symbol (properties that might hold true or false of the individual constants - like an evaluation function):
+        - Person
+        - House
+        - BelongsTo
+- Examples of sentences in first-order logic:
+    - Person(Minerva) - Minerva is a person
+    - House(Gryffindor) - Gryffindor is a house
+    - ~House(Minerva) - Minerva is not a house
+    - BelongsTo(Minerva, Gryffindor) - Minerva belongs to Gryffindor
+- First-order logic gives us a couple of additional features that we can use to express even more complex ideas - quantifiers
+
+### Quantifiers
+
+- Universal quantification - let's me express an idea like something is going to be true for all values of a variable
+    - ∀x. BelongsTo(x, Gryffindor) -> ~BelongsTo(x, Hufflepuff)
+        - for all values of x, if x belongs to Gryffindor then x does not belong to Hufflepuff / anyone in Gryffindor is not in Hufflepuff
+
+- Existential quantification - says that some expression is going to be true for some value of a variable (at least one value of that variable)
+    - ∃x. House(x) ^ BelongsTo(Minerva, x)
+        - there exists an object x such that x is a house and Minerva belongs to x / Minerva belongs to a house
+- Combining the two
+    - ∀x. Person(x) -> (∃y. House(y) ^ BelongsTo(x, y))
+        - for all objects x, if x is a person, then there exists an object y such that y is a house and x belongs to y / every person belongs to a house
