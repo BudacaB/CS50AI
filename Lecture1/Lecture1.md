@@ -40,6 +40,7 @@ We can conclude or draw these inferences:
 - or - disjunction - A v B
 - implies - implication - A -> b
 - if and only if - biconditional - A <-> B
+- (exclusive or - ⊕ or <-/->)
 <br><br>
 
 - <b>Not</b> (~) truth table:
