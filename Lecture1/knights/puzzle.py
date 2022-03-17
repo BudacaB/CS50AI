@@ -10,10 +10,14 @@ CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
 # Puzzle 0
+
+# Each character is either a knight or a knave.
+# Every sentence spoken by a knight is true, 
+    # and every sentence spoken by a knave is false.
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    Not(And(AKnight, AKnave)),
-    
+    Implication(AKnave, Not(AKnight)),
+    Implication(AKnight, Not(AKnave))
 )
 
 # Puzzle 1
