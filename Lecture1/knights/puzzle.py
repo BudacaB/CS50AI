@@ -9,6 +9,10 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+A = Symbol("A")
+B = Symbol("B")
+C = Symbol("C")
+
 # Puzzle 0
 
 # Each character is either a knight or a knave.
@@ -43,6 +47,7 @@ knowledge3 = And(
     # TODO
 )
 
+print(knowledge0.formula())
 
 def main():
     symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
