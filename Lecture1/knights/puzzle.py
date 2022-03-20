@@ -1,3 +1,4 @@
+from unicodedata import bidirectional
 from logic import *
 
 AKnight = Symbol("A is a Knight")
@@ -9,9 +10,22 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+characters = ["A", "B", "C"]
+occupations = ["Knight", "Knave"]
+
+symbolsDict = {}
+for character in characters:
+    for occupation in occupations:
+        symbolsDict[character + occupation] = Symbol(f"{character} is a {occupation}")
+
+symbols = []
+print(symbolsDict)
+        
+
 A = Symbol("A")
 B = Symbol("B")
 C = Symbol("C")
+ASentence = And(AKnave, AKnight)
 
 # Puzzle 0
 

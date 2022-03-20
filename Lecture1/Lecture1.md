@@ -517,7 +517,7 @@ Does (A v B) ^ (~B v C) ^ (~C) entail A?
             - (A v B) and ~B resolve to A
             - (~A) and (A) resolve to () - false so we have a contradiction, so A is true
 
-- Instead of enumerating all the possibl worlds that we might be in in order to try to figure out in which cases is our KB true and in which cases our query is true, we can instead use this resolution algorithm, to keep trying to figure out what conclusions we can draw and see if we reach a contradiction
+- Instead of enumerating all the possible worlds that we might be in in order to try to figure out in which cases is our KB true and in which cases our query is true, we can instead use this resolution algorithm, to keep trying to figure out what conclusions we can draw and see if we reach a contradiction
     - if we reach a contradiction that tells us something about whether our knowledge actually entails the query or not
 
 ## First-Order Logic
