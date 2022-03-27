@@ -1,4 +1,3 @@
-from unicodedata import bidirectional
 from logic import *
 
 AKnight = Symbol("A is a Knight")
@@ -10,32 +9,15 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
-characters = ["A", "B", "C"]
-occupations = ["Knight", "Knave"]
-
-symbolsDict = {}
-for character in characters:
-    for occupation in occupations:
-        symbolsDict[character + occupation] = Symbol(f"{character} is a {occupation}")
-
-symbols = []
-print(symbolsDict)
-        
-
-A = Symbol("A")
-B = Symbol("B")
-C = Symbol("C")
-ASentence = And(AKnave, AKnight)
-
 # Puzzle 0
-
-# Each character is either a knight or a knave.
-# Every sentence spoken by a knight is true, 
-    # and every sentence spoken by a knave is false.
 # A says "I am both a knight and a knave."
+ASentence = And(AKnave, AKnight)
 knowledge0 = And(
-    Implication(AKnave, Not(AKnight)),
-    Implication(AKnight, Not(AKnave))
+    Or(AKnight, AKnave),
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(AKnight, ASentence),
+    Biconditional(AKnave, Not(ASentence))
 )
 
 # Puzzle 1
