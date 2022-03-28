@@ -11,27 +11,44 @@ CKnave = Symbol("C is a Knave")
 
 # Puzzle 0
 # A says "I am both a knight and a knave."
-ASentence = And(AKnave, AKnight)
 knowledge0 = And(
+    # structure of the problem itself
     Or(AKnight, AKnave),
     Biconditional(AKnight, Not(AKnave)),
     Biconditional(AKnave, Not(AKnight)),
-    Biconditional(AKnight, ASentence),
-    Biconditional(AKnave, Not(ASentence))
+    # spoken sentences
+    Biconditional(AKnight, And(AKnave, AKnight)),
+    Biconditional(AKnave, Not(And(AKnave, AKnight)))
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+    Biconditional(AKnight, And(AKnave, BKnave)),
+    Biconditional(AKnave, Not(And(AKnave, BKnave)))
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+    Biconditional(AKnight, Or(And(AKnave, BKnave), And(AKnight, BKnight))),
+    Biconditional(AKnave, Not(Or(And(AKnave, BKnave), And(AKnight, BKnight)))),
+    Biconditional(BKnight, Or(And(AKnave, BKnight), And(AKnight, BKnave))),
+    Biconditional(BKnave, Not(Or(And(AKnave, BKnight), And(AKnight, BKnave))))
 )
 
 # Puzzle 3
@@ -40,7 +57,23 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Or(BKnight, BKnave),
+    Or(CKnight, CKnave),
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+    Biconditional(CKnight, Not(CKnave)),
+    Biconditional(CKnave, Not(CKnight)),
+    Biconditional(AKnight, Or(AKnave, AKnight)),
+    Biconditional(AKnave, Not(Or(AKnave, AKnight))),
+    Biconditional(BKnight, And(Biconditional(AKnight, AKnave), Biconditional(AKnave, Not(AKnave)))),
+    Biconditional(BKnave, Not(And(Biconditional(AKnight, AKnave), Biconditional(AKnave, Not(AKnave))))),
+    Biconditional(BKnight, CKnave),
+    Biconditional(BKnave, Not(CKnave)),
+    Biconditional(CKnight, AKnight),
+    Biconditional(CKnave, Not(AKnight)),
 )
 
 print(knowledge0.formula())
