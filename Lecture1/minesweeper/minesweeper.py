@@ -1,6 +1,8 @@
 import itertools
 import random
 
+from click import confirm
+
 
 class Minesweeper():
     """
@@ -105,7 +107,15 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        raise NotImplementedError
+        if (len(self.cells) == self.count):
+            return self.cells
+        # else:
+        #     confirmed_mines = set()
+        #     for cell in self.cells:
+        #         if (Minesweeper.is_mine(cell)):
+        #             confirmed_mines.add(cell)
+        #     return confirmed_mines
+
 
     def known_safes(self):
         """
