@@ -124,7 +124,7 @@ class Sentence():
         """
         if (cell in self.cells):
             self.cells.remove(cell)
-            self.count -= self.cells
+            self.count -= self.count
 
     def mark_safe(self, cell):
         """
@@ -191,6 +191,26 @@ class MinesweeperAI():
         """
         self.moves_made.add(cell)
         self.mark_safe(cell)
+
+        neighbors = self.get_undetermined_neighbors(cell)
+        new_sentence = Sentence(neighbors, count) # TODO check if the count needs to be adjusted
+
+    def get_undetermined_neighbors(self, cell):
+        neighbors = set()
+        # Loop over all cells within one row and column
+        for i in range(cell[0] - 1, cell[0] + 2):
+            for j in range(cell[1] - 1, cell[1] + 2):
+
+                # Ignore the cell itself
+                if (i, j) == cell:
+                    continue
+
+                # Add each undetermined cell to the neighbors
+                if 0 <= i < self.height and 0 <= j < self.width:
+                    cell = (i, j)
+                    if cell not in self.mines and cell not in self.safes:
+                        neighbors.add(cell)
+        return neighbors
 
     def make_safe_move(self):
         """
