@@ -192,16 +192,17 @@ class MinesweeperAI():
         self.moves_made.add(cell)
         self.mark_safe(cell)
 
-        neighbors = self.get_undetermined_neighbors(cell)
-        new_sentence = Sentence(neighbors, count) # TODO check if the count needs to be adjusted
+        neighbors = self.get_undetermined_neighbors(cell, count)
+        new_sentence = Sentence(neighbors[0], neighbors[1]) # TODO keep an eye on adjusted count
         self.knowledge.append(new_sentence)
 
-        # TODO mark as safe or mines any additional cells
+        # TODO mark as safe or mines any additional cells ; by known safes / known mines after marking the argument cell as safe?
 
         self.update_kb_inferred_sentences()
 
-    def get_undetermined_neighbors(self, cell):
+    def get_undetermined_neighbors(self, cell, count):
         neighbors = set()
+        countWithoutKnownMines = count
         # Loop over all cells within one row and column
         for i in range(cell[0] - 1, cell[0] + 2):
             for j in range(cell[1] - 1, cell[1] + 2):
@@ -213,9 +214,11 @@ class MinesweeperAI():
                 # Add each undetermined cell to the neighbors
                 if 0 <= i < self.height and 0 <= j < self.width:
                     cell = (i, j)
+                    if cell in self.mines:
+                        countWithoutKnownMines -= countWithoutKnownMines
                     if cell not in self.mines and cell not in self.safes:
                         neighbors.add(cell)
-        return neighbors
+        return neighbors, countWithoutKnownMines
 
     def update_kb_inferred_sentences(self, sentence_to_check):
         for sentence in self.knowledge:
