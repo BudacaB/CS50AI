@@ -197,8 +197,11 @@ class MinesweeperAI():
         self.knowledge.append(new_sentence)
 
         # TODO mark as safe or mines any additional cells ; by known safes / known mines after marking the argument cell as safe?
-
         self.update_kb_inferred_sentences()
+
+        self.update_subset_kb_inferred_sentences()
+
+        #TODO run checks again each time a new sentence is added?
 
     def get_undetermined_neighbors(self, cell, count):
         neighbors = set()
@@ -220,7 +223,14 @@ class MinesweeperAI():
                         neighbors.add(cell)
         return neighbors, countWithoutKnownMines
 
-    def update_kb_inferred_sentences(self, sentence_to_check):
+    def update_kb_inferred_sentences(self):
+        for sentence in self.knowledge:
+            if sentence.known_safes():
+                self.safes.update(sentence.known_safes())
+            if sentence.known_mines():
+                self.mines.update(sentence.known_mines())
+            
+    def update_subset_kb_inferred_sentences(self):
         for sentence in self.knowledge:
             for inner_sentence in self.knowledge:
                 if sentence.cells.issubset(inner_sentence.cells) and len(sentence.cells) != len(inner_sentence.cells):
