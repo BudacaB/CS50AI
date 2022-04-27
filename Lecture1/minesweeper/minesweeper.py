@@ -1,4 +1,3 @@
-import itertools
 import random
 
 from click import confirm
@@ -203,6 +202,10 @@ class MinesweeperAI():
 
         #TODO run checks again each time a new sentence is added?
 
+        #TODO check neighbors bug
+        for elem in self.knowledge:
+            print(elem)
+
     def get_undetermined_neighbors(self, cell, count):
         neighbors = set()
         countWithoutKnownMines = count
@@ -248,7 +251,13 @@ class MinesweeperAI():
         This function may use the knowledge in self.mines, self.safes
         and self.moves_made, but should not modify any of those values.
         """
-        raise NotImplementedError
+        if (len(self.safes) == 0):
+            return None
+        else:
+            for move in self.safes:
+                if (move not in self.moves_made):
+                    return move
+        return None
 
     def make_random_move(self):
         """
@@ -257,4 +266,15 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        raise NotImplementedError
+        all_cells = set()
+        for i in range(self.height):
+            for j in range(self.width):
+                cell = (i, j)
+                all_cells.add(cell)
+        
+        possible_moves = all_cells - self.moves_made
+        potential_safe_moves = possible_moves - self.mines
+        potential_safe_moves_list = list(potential_safe_moves)
+
+        return random.choice(potential_safe_moves_list)
+
