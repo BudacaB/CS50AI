@@ -195,7 +195,6 @@ class MinesweeperAI():
         new_sentence = Sentence(neighbors[0], neighbors[1]) # TODO keep an eye on adjusted count
         self.knowledge.append(new_sentence)
 
-        # TODO mark as safe or mines any additional cells ; by known safes / known mines after marking the argument cell as safe?
         self.update_kb_inferred_sentences()
 
         self.update_subset_kb_inferred_sentences()
@@ -203,8 +202,9 @@ class MinesweeperAI():
         #TODO run checks again each time a new sentence is added?
 
         #TODO check neighbors bug
-        for elem in self.knowledge:
-            print(elem)
+        # print("new")
+        # for elem in self.knowledge:
+        #     print(elem)
 
     def get_undetermined_neighbors(self, cell, count):
         neighbors = set()
@@ -221,7 +221,7 @@ class MinesweeperAI():
                 if 0 <= i < self.height and 0 <= j < self.width:
                     cell = (i, j)
                     if cell in self.mines:
-                        countWithoutKnownMines -= countWithoutKnownMines
+                        countWithoutKnownMines -= 1
                     if cell not in self.mines and cell not in self.safes:
                         neighbors.add(cell)
         return neighbors, countWithoutKnownMines
@@ -233,14 +233,19 @@ class MinesweeperAI():
             if sentence.known_mines():
                 self.mines.update(sentence.known_mines())
             
+    # TODO a bug is in here
     def update_subset_kb_inferred_sentences(self):
+        inferred_sentences = []
         for sentence in self.knowledge:
             for inner_sentence in self.knowledge:
-                if sentence.cells.issubset(inner_sentence.cells) and len(sentence.cells) != len(inner_sentence.cells):
+                if sentence.cells.issubset(inner_sentence.cells) and len(sentence.cells) < len(inner_sentence.cells):
                     updated_count = inner_sentence.count - sentence.count
                     updated_cells = inner_sentence.cells - sentence.cells
+                    print(updated_count)
                     new_sentence = Sentence(updated_cells, updated_count)
-                    self.knowledge.append(new_sentence)
+                    inferred_sentences.append(new_sentence)
+        for sentence in inferred_sentences:
+            self.knowledge.append(sentence)
 
     def make_safe_move(self):
         """
@@ -251,13 +256,12 @@ class MinesweeperAI():
         This function may use the knowledge in self.mines, self.safes
         and self.moves_made, but should not modify any of those values.
         """
-        if (len(self.safes) == 0):
-            return None
-        else:
+        if (len(self.safes) != 0):
             for move in self.safes:
                 if (move not in self.moves_made):
                     return move
-        return None
+        else: 
+            return None
 
     def make_random_move(self):
         """
