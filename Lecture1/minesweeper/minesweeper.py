@@ -1,6 +1,5 @@
 import random
-
-from click import confirm
+import itertools
 
 
 class Minesweeper():
@@ -192,19 +191,12 @@ class MinesweeperAI():
         self.mark_safe(cell)
 
         neighbors = self.get_undetermined_neighbors(cell, count)
-        new_sentence = Sentence(neighbors[0], neighbors[1]) # TODO keep an eye on adjusted count
+        new_sentence = Sentence(neighbors[0], neighbors[1])
         self.knowledge.append(new_sentence)
 
         self.update_kb_inferred_sentences()
 
-        self.update_subset_kb_inferred_sentences()
-
-        #TODO run checks again each time a new sentence is added?
-
-        #TODO check neighbors bug
-        # print("new")
-        # for elem in self.knowledge:
-        #     print(elem)
+        self.update_subset_and_duplicate_kb_inferred_sentences()
 
     def get_undetermined_neighbors(self, cell, count):
         neighbors = set()
@@ -219,11 +211,11 @@ class MinesweeperAI():
 
                 # Add each undetermined cell to the neighbors
                 if 0 <= i < self.height and 0 <= j < self.width:
-                    cell = (i, j)
-                    if cell in self.mines:
+                    neighbor_cell = (i, j)
+                    if neighbor_cell in self.mines:
                         countWithoutKnownMines -= 1
-                    if cell not in self.mines and cell not in self.safes:
-                        neighbors.add(cell)
+                    if neighbor_cell not in self.mines and neighbor_cell not in self.safes:
+                        neighbors.add(neighbor_cell)
         return neighbors, countWithoutKnownMines
 
     def update_kb_inferred_sentences(self):
@@ -233,19 +225,20 @@ class MinesweeperAI():
             if sentence.known_mines():
                 self.mines.update(sentence.known_mines())
             
-    # TODO a bug is in here
-    def update_subset_kb_inferred_sentences(self):
+    def update_subset_and_duplicate_kb_inferred_sentences(self):
         inferred_sentences = []
-        for sentence in self.knowledge:
-            for inner_sentence in self.knowledge:
-                if sentence.cells.issubset(inner_sentence.cells) and len(sentence.cells) < len(inner_sentence.cells):
-                    updated_count = inner_sentence.count - sentence.count
-                    updated_cells = inner_sentence.cells - sentence.cells
-                    print(updated_count)
-                    new_sentence = Sentence(updated_cells, updated_count)
-                    inferred_sentences.append(new_sentence)
+        duplicates = []
+        for a, b in itertools.combinations(self.knowledge, 2):
+            if a.cells.issubset(b.cells) and len(a.cells) < len(b.cells):
+                updated_count = b.count - a.count
+                updated_cells = b.cells - a.cells
+                new_sentence = Sentence(updated_cells, updated_count)
+                inferred_sentences.append(new_sentence)
+            if a == b:
+                duplicates.append(b)
         for sentence in inferred_sentences:
             self.knowledge.append(sentence)
+        self.knowledge = [sentence for sentence in self.knowledge if sentence not in duplicates]
 
     def make_safe_move(self):
         """
@@ -279,6 +272,7 @@ class MinesweeperAI():
         possible_moves = all_cells - self.moves_made
         potential_safe_moves = possible_moves - self.mines
         potential_safe_moves_list = list(potential_safe_moves)
-
-        return random.choice(potential_safe_moves_list)
+        if len(potential_safe_moves_list) != 0:
+            return random.choice(potential_safe_moves_list)
+        return None
 
