@@ -42,3 +42,34 @@ Conditional probability is the degree of belief in a proposition given some evid
     - P(sum 12) = 1/36
     = P(sum 12 | roll six on one die) = 1/36 / 1/6 = 1/6
 
+## Random variables
+
+- a random variable is a variable in probability theory with a domain of possible values that it can take on
+    - e.g. a variable <b>roll</b> that can take on the values {1, 2, 3, 4, 5, 6} ; a variable <b>weather</b> with values {sun, cloud, rain, wind, snow} ; a variable <b>flight</b> with values {on time, delayed, cancelled}
+- <b>probability distribution</b>
+    - P(flight = on time) = 0.6
+    - P(flight = delayed) = 0.3
+    - P(flight = cancelled) = 0.1
+    - a probability distribution can be represented more succinctly as a vector: <b>P</b>(flight) = <0.6, 0.3, 0.1>
+        - for this notation to be interpretable, the values have a set order (in our case, on time, delayed, canceled).
+- <b>independence</b> is the knowledge that the occurrence of one event does not affect the probability of the other event
+    - e.g. P(a ^ b) = P(a)*P(b | a) - if a being true doesn't make a difference for b being true -> P(a ^ b) = P(a)*P(b)
+    - independence can be defined mathematically: events a and b are independent if and only if the probability of a and b is equal to the probability of a times the probability of b: P(a ∧ b) = P(a)P(b).
+
+## Bayes' Rule
+
+- definition:
+    - P(a ^ b) = P(b)*P(a | b)
+    - P(a ^ b) = P(a)*P(b | a)
+    - P(a)*P(b | a) = P(b)*P(a | b) -> P(b | a) = P(b)*P(a | b) / P(a)
+- E.g. two events - cloudy in the AM, rain in the PM
+    - given clouds in the morning, what is the probability of rain in the afternoon?
+    - data:
+        - 80% of rainy afternoons start with cloudy mornings
+        - 40% of days have cloudy mornings
+        - 10% of days have rainy afternoons
+    - P(rain | clouds) = P(clouds | rain)*P(rain) / P(clouds) = (.8)(.1) / .4 = 0.2
+- knowing P(cloudy morning | rainy afternoon) we can calculate P(rainy afternoon | cloudy morning)
+- knowing P(visible effect | unknown cause) we can calculate P(unknown cause | visible effect) -> e.g. knowing P(medical test result | disease) we can calculate P(disease | medical test result) or knowing P(blurry text | counterfeit bill) we can calculate P(counterfeit bill | blurry text)
+
+
