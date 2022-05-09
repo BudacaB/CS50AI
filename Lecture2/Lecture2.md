@@ -113,3 +113,51 @@ Joint probability is the likelihood of multiple events all occurring.
         P(X = x<sub>i</sub>) = Σ<sub>j</sub>P(X = x<sub>i</sub> | Y = y<sub>j</sub>)*P(Y = y<sub>j</sub>)
             - again there is a summation over all of the possible values that some random variable Y can take on between the chance that Y takes on some value and multiply it by the conditional probability that X takes on a value x<sub>i</sub> given that Y took on that value y<sub>j</sub>
 
+## Bayesian network
+
+Data structure that represents the dependencies among random variables
+
+- Description:
+    - directed graph
+    - each node represents a random variable
+    - arrow from X to Y means X is a parent of Y
+    - each node X has a probability distribution <b>P</b>(X | Parents(X))
+- E.g. - bayesiannetwork.png
+    - probability distribution for the root node Rain
+
+    | none | light | heavy |
+    | ---- | ----- | ----- |
+    | 0.7 |  0.2 | 0.1 |
+
+    - probability distribution for Maintenance node (child or Rain -> conditional probability distribution)
+
+    | R | yes | no |
+    | ---- | ----- | ----- |
+    | none |  0.4 | 0.6 |
+    | light | 0.2 | 0.8 |
+    | heavy | 0.1 | 0.9 |
+
+    - probability distribution for Train node (child of Rain and Maintenance -> a larger conditional probability distribution)
+
+    | R | M | on time | delayed |
+    | ---- | ---- | ----- | ----- |
+    | none | yes |  0.8 | 0.2 |
+    | none | no | 0.9 | 0.1 |
+    | light | yes | 0.6 | 0.4 |
+    | light | no | 0.7 | 0.3 |
+    | heavy | yes | 0.4 | 0.6 |
+    | heavy | no | 0.5 | 0.5 |
+
+    - probability distribution for Appointment (child of Train -> conditional probability distribution)
+
+    | T | attend | miss |
+    | ---- | ----- | ----- |
+    | on time |  0.9 | 0.1 |
+    | delayed | 0.6 | 0.4 |
+
+    - e.g. of calculations
+        - P(light) - known
+        - P(light, no) = P(light)*P(no | light)
+        - P(light, no, delayed) = P(light)*P(no | light)*P(delayed | light, no)
+        - P(light, no, delayed, miss) = P(light)*P(no | light)*P(delayed | light, no)*P(miss | delayed)
+
