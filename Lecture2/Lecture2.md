@@ -72,4 +72,44 @@ Conditional probability is the degree of belief in a proposition given some evid
 - knowing P(cloudy morning | rainy afternoon) we can calculate P(rainy afternoon | cloudy morning)
 - knowing P(visible effect | unknown cause) we can calculate P(unknown cause | visible effect) -> e.g. knowing P(medical test result | disease) we can calculate P(disease | medical test result) or knowing P(blurry text | counterfeit bill) we can calculate P(counterfeit bill | blurry text)
 
+## Joint probability
+
+Joint probability is the likelihood of multiple events all occurring.
+
+- E.g. let's consider these probability distributions:
+    - clouds in the morning: c = cloud 0.4 ; c = ¬cloud 0.6
+    - rain in the afternoon: r = rain 0.1 ; r = ¬rain 0.9
+    - joint probability distribution:
+    
+    |  | r = rain | r = ¬rain |
+    | ---- | ----- | ----- |
+    | c = cloud |  0.08 | 0.32 |
+    | c = ¬cloud | 0.02 | 0.58 |
+
+    - for the probability distribution of P(c | r):
+        - P(c | r) = P(c, r) / R(r) 
+            -  <em>comma can be used for ^ (and)</em>
+            - P(r) - a numerical constant used for the division, or put another way, for the multiplication with its inverse
+        - to simplify mathematically: αP(c, r)
+        - so the conditional distribution of c given r <em>P(c | r)</em> is proportional to (using a factor α for multiplication) the joint probability distribution of c and r <em>P(c, r)</em>
+        - αP(c, r) = α<0.08, 0.02>
+        - in a probability distribution, if you consider all of the possible values, they must sum up to a probability of 1 -> the constant for α to 'normalize' our values is 10 -> <0.8, 0.2>
+
+## Probability rules
+
+- Negation: P(¬a) = 1 - P(a)
+- Inclusion-Exclusion: P(a v b) = P(a) + P(b) - P(a ^ b)
+    - Here is an example from outside lecture that can elucidate this. Suppose I eat ice cream 80% of days and cookies 70% of days. If we’re calculating the probability that today I eat ice cream or cookies P(ice cream ∨ cookies) without subtracting P(ice cream ∧ cookies), we erroneously end up with 0.7 + 0.8 = 1.5. This contradicts the axiom that probability ranges between 0 and 1. To correct for counting twice the days when I ate both ice cream and cookies, we need to subtract P(ice cream ∧ cookies) once
+- Marginalization: P(a) = P(a, b) + P(a, ¬b)
+    - how do I figure out the probability of a, using some other variable that I might have access to like b?
+    - using disjoint events - either b happens or b doesn't happen
+    - Marginalization can be expressed for random variables the following way:
+        - P(X = x<sub>i</sub>) = Σ<sub>j</sub>P(X = x<sub>i</sub>, Y = y<sub>j</sub>)
+            - if we have two random variables, X and Y, the probability of X being equal to some value x<sub>i</sub> can be figured out by summing up over j (where j is going to range over all of the possible values that Y can take on) all of the possible cases for this joint probability distribution - that X takes the value that I care about given all of the possible values for Y -> we can get the unconditional probability of what X is equal to
+            - e.g. from before P(c = cloud) = P(c = cloud, r = rain) + P(c = cloud, r = ¬rain) = 0.08 + 0.32 = 0.4.
+- Conditioning: P(a) = P(a | b)P(b) + P(a | ¬b)P(¬b)
+    - similar to marginalization, for two events a and b, but instead of having access to their joint probabilities, we have access to their <em>conditional probabilities</em> i.e. how they relate to eachother
+        - for random variables that can take on multiple possible values in a domain of possible values, conditioning that this equivalent rule:
+        P(X = x<sub>i</sub>) = Σ<sub>j</sub>P(X = x<sub>i</sub> | Y = y<sub>j</sub>)*P(Y = y<sub>j</sub>)
+            - again there is a summation over all of the possible values that some random variable Y can take on between the chance that Y takes on some value and multiply it by the conditional probability that X takes on a value x<sub>i</sub> given that Y took on that value y<sub>j</sub>
 
