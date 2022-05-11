@@ -161,3 +161,29 @@ Data structure that represents the dependencies among random variables
         - P(light, no, delayed) = P(light)*P(no | light)*P(delayed | light, no)
         - P(light, no, delayed, miss) = P(light)*P(no | light)*P(delayed | light, no)*P(miss | delayed)
 
+## Inference
+
+At the last lecture, we looked at inference through entailment. This means that we could definitively conclude new information based on the information that we already had. We can also infer new information based on probabilities. While this does not allow us to know new information for certain, it allows us to figure out the probability distributions for some values
+
+- Inference has multiple properties:
+    - Query <b>X</b>: a variable for which to compute the probability distribution
+    - Evidende variables <b>E</b>: observed variables for event <b>e</b> - e.g. we might have observed that there is light rain, and this observation helps us compute the probability that the train will be delayed
+    - Hidden variables <b>Y</b>: non-evidence, non-query variables - e.g. standing at the train station we can't know if there is maintenance on the track further down the road
+    - The goal: <b>P</b>(X | e) - e.g. compute the probability distribution of the Train variable (the query) based on the evidence <b>e</b> that we know there is light rain
+- E.g. <b>P</b>(Appointment | light, no) - light rain and no track maintenance ; the hidden variable is variable Train
+    - we know from above that a <em>conditional probability is proportional to the joint probability</em> (P(a | b) = αP(a, b))
+    - P(Appointment | light, no) = αP(Appointment, light, no)
+    - we also need the Train variable because the Appointment variable depends on it; we can use <em>marginalization</em> for it - there are only two ways can get a configuration of Appointment, light rain and no track maintenance, either this particular setting happens and the train is on time, either this particular setting happens and the train is delayed, so we can add up all of the posibilities for the hidden variable
+    - αP(Appointment, light, no) = α[P(Appointment, light, no, on time) + P(Appointment, light, no, delayed)]
+    - we can do these calculations and the normalize them at the end to make sure that everything adds up to 1
+
+## Inference by enumeration
+
+Inference by enumeration is a process of finding the probability distribution of variable X given observed evidence e and some hidden variables Y.
+
+- P(X | e) = αP(X, e)  = αΣ<sub>y</sub>P(X, e, y)
+    - x is the query variable
+    - e is the evidence
+    - y ranges over values of hidden variables
+    - α normalizes the result
+- Multiple libraries exist in Python to ease the process of probabilistic inference. We will take a look at the library <em>pomegranate</em> to see how the above data can be represented in code
