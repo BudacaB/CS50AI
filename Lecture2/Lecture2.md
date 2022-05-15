@@ -167,7 +167,7 @@ At the last lecture, we looked at inference through entailment. This means that 
 
 - Inference has multiple properties:
     - Query <b>X</b>: a variable for which to compute the probability distribution
-    - Evidende variables <b>E</b>: observed variables for event <b>e</b> - e.g. we might have observed that there is light rain, and this observation helps us compute the probability that the train will be delayed
+    - Evidence variables <b>E</b>: observed variables for event <b>e</b> - e.g. we might have observed that there is light rain, and this observation helps us compute the probability that the train will be delayed
     - Hidden variables <b>Y</b>: non-evidence, non-query variables - e.g. standing at the train station we can't know if there is maintenance on the track further down the road
     - The goal: <b>P</b>(X | e) - e.g. compute the probability distribution of the Train variable (the query) based on the evidence <b>e</b> that we know there is light rain
 - E.g. <b>P</b>(Appointment | light, no) - light rain and no track maintenance ; the hidden variable is variable Train
@@ -187,3 +187,17 @@ Inference by enumeration is a process of finding the probability distribution of
     - y ranges over values of hidden variables
     - α normalizes the result
 - Multiple libraries exist in Python to ease the process of probabilistic inference. We will take a look at the library <em>pomegranate</em> to see how the above data can be represented in code
+
+However, this way of computing probability is inefficient, especially when there are many variables in the model. A different way to go about this would be abandoning exact inference in favor of approximate inference. Doing this, we lose some precision in the generated probabilities, but often this imprecision is negligible. Instead, we gain a scalable method of calculating probabilities.
+
+## Approximate Inference - Sampling
+
+Sampling is one technique of approximate inference. In sampling, each variable is sampled for a value according to its probability distribution
+
+- E.g. based on our Bayesian network from before, we start sampling by choosing different values from each node - for child nodes we will only select possible values for the parent choices
+    - we start randomly with R = none, then go with M = yes, then go with T = on time, then A = attend
+    - so one possible sample from this Bayesian network according to the probability distributions is: R = none ; M = yes ; T = on time ; A = attend
+    - if we do this many times we will generate a whole bunch of different samples from this distribution
+    - then if ever faced with a question like P(Train = on time)? we could do an exact inference procedure or just sample / approximate it to get close -> we look at the samples where the Train is on time (e.g. 6 out of 8 cases) and we can consider that as the likelihood
+    - the more samples we have - the better inference procedure
+
