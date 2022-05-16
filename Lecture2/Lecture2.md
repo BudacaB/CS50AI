@@ -194,10 +194,53 @@ However, this way of computing probability is inefficient, especially when there
 
 Sampling is one technique of approximate inference. In sampling, each variable is sampled for a value according to its probability distribution
 
-- E.g. based on our Bayesian network from before, we start sampling by choosing different values from each node - for child nodes we will only select possible values for the parent choices
+- E.g. unconditional probability - based on our Bayesian network from before, we start sampling by choosing different values from each node - for child nodes we will only select possible values for the parent choices
     - we start randomly with R = none, then go with M = yes, then go with T = on time, then A = attend
     - so one possible sample from this Bayesian network according to the probability distributions is: R = none ; M = yes ; T = on time ; A = attend
     - if we do this many times we will generate a whole bunch of different samples from this distribution
     - then if ever faced with a question like P(Train = on time)? we could do an exact inference procedure or just sample / approximate it to get close -> we look at the samples where the Train is on time (e.g. 6 out of 8 cases) and we can consider that as the likelihood
     - the more samples we have - the better inference procedure
 
+
+- Rejection Sampling
+    - E.g. conditional probability P(Rain = light | Train = on time)
+        - we add one more step and start by rejecting all of the samples that don't match my evidence Train = on time
+        - then from the remaining samples we consider only the ones where Rain = light
+        - a disadvantage of this method is that if the evidence we're looking for is a fairly unlikely event -> a lot of samples are going to be rejected
+
+- Likelihood Weighting
+    - we follow a different procedure in which the goal is to avoid throwing out samples that didn't match the evidence
+    - procedure:
+        - start by fixing the values for evidence variables - we won't sample those
+        - sample the non-evidence variables using conditional probabilities in the Bayesian Network
+        - weight each sample by its <b>likelihood</b>: the probability of all of the evidence 
+            - if we have a sample where the evidence was much more likely to show up than another sample, then I want to weight the likely one higher
+            - before, all our sample were weighted equally (had a weight of 1) - now we will multiply each sample by its likelihood to get the more accurate distribution
+    - for P(Rain = light | Train = on time)
+        - we fix the evidence variable Train = on time and only sample things where I know the value of the variable Train and so not throw anything out
+        - we sample the rest of the nodes and then we weight samples according to the probability of the evidence, e.g. for sample: R = light ; M = yes ; T = on time ; A = attend we look at the values table to get the likelihood of the evidence - in this case 0.6 -> this sample would have a weight of 0.6:
+
+        | R | M | on time | delayed |
+        | ---- | ---- | ----- | ----- |
+        | none | yes |  0.8 | 0.2 |
+        | none | no | 0.9 | 0.1 |
+        | light | yes | 0.6 | 0.4 |
+        | light | no | 0.7 | 0.3 |
+        | heavy | yes | 0.4 | 0.6 |
+        | heavy | no | 0.5 | 0.5 |
+
+
+## Markov Models
+
+So far, we have looked at questions of probability given some information that we observed. In this kind of paradigm, the dimension of time is not represented in any way. However, many tasks do rely on the dimension of time, such as prediction. To represent the variable of time we will create a new variable, X, and change it based on the event of interest, such that X<sub>t</sub> is the current event, X<sub>t+1</sub> is the next event, and so on. To be able to predict events in the future, we will use Markov Models.
+
+- here we would have a variable for weather for example, for every possible time step (we could define it as days in our case)
+    - X<sub>t</sub> - weather at time t - X<sub>0</sub>, X<sub>1</sub> etc.
+    - if we start doing this over longer and longer periods of time there's an incredible amount of data that might go into this
+    - when we try to do this kind of inference inside a computer it's helpful to make some simplifying assumptions about the problem even if they're not 100% accurate, close is enough
+
+- <b>Markov Assumption</b>
+    - the assumption that the current state depends on only a finite fixed number of previous states - for example the weather does not depent on the full history of weather, but we can predict today's weather just based on yesterday (just the one previous state usually), or on last few days etc.
+
+- <b>Markov Chain</b>
+    - a sequence of random variables where the distribution of each variable follows the Markov assumption
