@@ -244,3 +244,21 @@ So far, we have looked at questions of probability given some information that w
 
 - <b>Markov Chain</b>
     - a sequence of random variables where the distribution of each variable follows the Markov assumption
+    - e.g. I can predict the weather and come up with a probability distribution - is it sunny or rainy (we consider just these two possibilites for now) - just based on the previous day's weather
+
+        | | Sunny tomorrow X<sub>t+1</sub> | Rainy tomorrow X<sub>t+1</sub> |
+        | ---- | ----- | ----- |
+        | Sunny today X<sub>t</sub> |  0.8 | 0.2 |
+        | Rainy today X<sub>t</sub> | 0.3 | 0.7 |
+
+    - <b>Transition Model</b>
+        - how we transition from one state to the next state in the above matrix - for example we sample tomorrow's weather based on how the weather is today
+        - X<sub>0</sub> sunny -> X<sub>1</sub> sunny -> X<sub>2</sub> rainy -> X<sub>3</sub> rainy -> X<sub>4</sub> rainy -> ...
+        - we can do analysis on this kind of chain and try to get the probability for a sequence of a few days as well
+        - Markov models rely on us knowing the values of these individual states to be able to draw inferences
+
+## Sensor Models
+
+- in practice, often times we don't know the state of the world but we can sense some info about that state - for example a robot or an AI doesn't have exact knowledge about the world but has some sort of sensor, like a camera, a mic, a distance detector - that data is related to the state of the world even if the AI doesn't know what the underlying true state of the world actually is
+- sensor models - how we translate what the <b>Hidden State</b> (underlying true state of the world) is, with what the <b>Observation</b> (what it is or what it is that the AI has access to) actually is.
+
