@@ -122,7 +122,7 @@ Data structure that represents the dependencies among random variables
     - each node represents a random variable
     - arrow from X to Y means X is a parent of Y
     - each node X has a probability distribution <b>P</b>(X | Parents(X))
-- E.g. - bayesiannetwork.png
+- E.g. - see bayesiannetwork.png
     - probability distribution for the root node Rain
 
     | none | light | heavy |
@@ -260,5 +260,42 @@ So far, we have looked at questions of probability given some information that w
 ## Sensor Models
 
 - in practice, often times we don't know the state of the world but we can sense some info about that state - for example a robot or an AI doesn't have exact knowledge about the world but has some sort of sensor, like a camera, a mic, a distance detector - that data is related to the state of the world even if the AI doesn't know what the underlying true state of the world actually is
-- sensor models - how we translate what the <b>Hidden State</b> (underlying true state of the world) is, with what the <b>Observation</b> (what it is or what it is that the AI has access to) actually is.
+
+- sensor models - how we translate what the <b>Hidden State</b> (underlying true state of the world) is, with what the <b>Observation</b> (what it is or what it is that the AI has access to) actually is - could have 'noise'
+
+| Hidden State | Observation |
+| ---- | ----- |
+| robot's position - what the true hidden state is influences the observation of the sensor data | robot's sensor data - the robot can sense how far away are possible obstacles for example and using that observed info it can infer something about the hidden state |
+| words spoken | audio waveforms - infer based on these what the spoken words likely were |
+| user engagement | website or app analytics |
+| weather (camera inside a building) | umbrella (seeing if employees bring in umbrellas) |
+
+## Hidden Markov Model
+
+A Markov model for a system with hidden states that generate some observed event
+
+Here is our <b>sensor model</b> (also called <b>emission model</b> - the the underlying state emits some sort of emission that we then observe) that represents these probabilities:
+
+- State (X<sub>t</sub>)
+- Observation (E<sub>t</sub>)
+
+|  | Observation = Yes umbrella | Observation = No umbrella |
+| ---- | ----- | ----- |
+| State = sunny  |  0.2 | 0.8 |
+| State = rainy | 0.9 | 0.1 |
+
+- <b>Sensor Markov assumption</b> - the assumption that the evidence variable (the thing we observe i.e. the emission) depends only on the corresponding state -> I can predict whether or not people will bring an umbrella entirely dependent just on whether it is sunny or rainy today (of course, this assumption might not hold in practice) just to allow us to reason more easily about these probabilities and approximate
+
+- A hidden Markov model can be represented in a Markov chain with two layers. The top layer, variable X, stands for the hidden state. The bottom layer, variable E, stands for the evidence, the observations that we have (see hiddenmarkovchain.png)
+
+- There are a number of possible tasks that we might want to do given this information - trying to infer something about the future or the past or about these sort of hidden states that might exist (all based on the same idea - conditional probabilities and using the probability distributions we have to draw these sort of conclusion):
+
+| Task | Definition |
+| ---- | ---- |
+| filtering | given observation from start until now, calculate distribution for current state |
+| prediction | given observations from start until now, calculate distribution for a future state |
+| smoothing | given observations from start until now, calculate distribution for past state |
+| most likely explanation | given observations from start until now, calculate most likely sequence of states |
+
+
 
