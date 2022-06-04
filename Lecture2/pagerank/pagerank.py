@@ -15,13 +15,13 @@ def main():
     # transition_model(corpus, "2.html", DAMPING)
     # transition_model(corpus, "recursion.html", DAMPING)
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
-    print(f"PageRank Results from Sampling (n = {SAMPLES})")
-    for page in sorted(ranks):
-        print(f"  {page}: {ranks[page]:.4f}")
-    ranks = iterate_pagerank(corpus, DAMPING)
-    print(f"PageRank Results from Iteration")
-    for page in sorted(ranks):
-        print(f"  {page}: {ranks[page]:.4f}")
+    # print(f"PageRank Results from Sampling (n = {SAMPLES})")
+    # for page in sorted(ranks):
+    #     print(f"  {page}: {ranks[page]:.4f}")
+    # ranks = iterate_pagerank(corpus, DAMPING)
+    # print(f"PageRank Results from Iteration")
+    # for page in sorted(ranks):
+    #     print(f"  {page}: {ranks[page]:.4f}")
 
 
 def crawl(directory):
@@ -89,6 +89,8 @@ def sample_pagerank(corpus, damping_factor, n):
     PageRank values should sum to 1.
     """
     sample_pagerank = dict()
+    starting_page = random.randint(0, len(corpus) - 1)
+    print(list(corpus)[starting_page])
 
 
 def iterate_pagerank(corpus, damping_factor):
