@@ -15,13 +15,13 @@ def main():
     corpus = crawl(sys.argv[1])
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
     print(ranks)
-    # print(f"PageRank Results from Sampling (n = {SAMPLES})")
-    # for page in sorted(ranks):
-    #     print(f"  {page}: {ranks[page]:.4f}")
-    # ranks = iterate_pagerank(corpus, DAMPING)
-    # print(f"PageRank Results from Iteration")
-    # for page in sorted(ranks):
-    #     print(f"  {page}: {ranks[page]:.4f}")
+    print(f"PageRank Results from Sampling (n = {SAMPLES})")
+    for page in sorted(ranks):
+        print(f"  {page}: {ranks[page]:.4f}")
+    ranks = iterate_pagerank(corpus, DAMPING)
+    print(f"PageRank Results from Iteration")
+    for page in sorted(ranks):
+        print(f"  {page}: {ranks[page]:.4f}")
 
 
 def crawl(directory):
@@ -77,7 +77,7 @@ def transition_model(corpus, page, damping_factor):
                 probability_distribution[entry] = random_page_probability
     return probability_distribution
 
-
+# TODO fix for corpus1 and corpus2
 def sample_pagerank(corpus, damping_factor, n):
     """
     Return PageRank values for each page by sampling `n` pages
@@ -101,7 +101,7 @@ def sample_pagerank(corpus, damping_factor, n):
        sample_pagerank_count[next_page] += 1
        probability_distribution = transition_model(corpus, next_page, damping_factor)
        
-    sample_pagerank = {key: round(value / n, 4) for key, value in sample_pagerank_count.items()}
+    sample_pagerank = {key: value / n for key, value in sample_pagerank_count.items()}
     return sample_pagerank
 
 
@@ -114,7 +114,29 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    iterate_pagerank = dict()
+    page_count = len(corpus)
+    for page in corpus:
+        iterate_pagerank[page] = 1 / page_count
+    
+    # PR(p) = 1 - d / N + d Ei PR(i) / NumLinks(i)
+
+    for corpus_page in corpus:
+        # get pages that link to a page
+        linked_pages =  [page for page, pages in corpus.items() if corpus_page in pages]
+        # linked_pages =  [page for page, pages in corpus.items() if list(corpus.keys())[3] in pages]
+
+        print(linked_pages)
+
+        sigma_sum = 0
+        for page in linked_pages:
+            sigma_sum += (iterate_pagerank[page] / len(linked_pages))
+
+        prob_page = ((1 - damping_factor) / page_count) + (damping_factor * sigma_sum)
+        iterate_pagerank[corpus_page] = prob_page
+    
+
+    return iterate_pagerank
 
 
 if __name__ == "__main__":
