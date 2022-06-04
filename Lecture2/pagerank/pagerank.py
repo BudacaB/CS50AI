@@ -1,7 +1,9 @@
+from dis import dis
 import os
 import random
 import re
 import sys
+from pomegranate import *
 
 DAMPING = 0.85
 SAMPLES = 10000
@@ -11,10 +13,8 @@ def main():
     if len(sys.argv) != 2:
         sys.exit("Usage: python pagerank.py corpus")
     corpus = crawl(sys.argv[1])
-    # TODO remove when done
-    # transition_model(corpus, "2.html", DAMPING)
-    # transition_model(corpus, "recursion.html", DAMPING)
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
+    print(ranks)
     # print(f"PageRank Results from Sampling (n = {SAMPLES})")
     # for page in sorted(ranks):
     #     print(f"  {page}: {ranks[page]:.4f}")
@@ -78,7 +78,6 @@ def transition_model(corpus, page, damping_factor):
     return probability_distribution
 
 
-
 def sample_pagerank(corpus, damping_factor, n):
     """
     Return PageRank values for each page by sampling `n` pages
@@ -88,9 +87,22 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    sample_pagerank = dict()
-    starting_page = random.randint(0, len(corpus) - 1)
-    print(list(corpus)[starting_page])
+    sample_pagerank_count = dict()
+    for page in corpus:
+        sample_pagerank_count[page] = 0
+
+    starting_page_random_index = random.randint(0, len(corpus) - 1)
+    starting_page = list(corpus)[starting_page_random_index]
+    probability_distribution = transition_model(corpus, starting_page, damping_factor)
+
+    for i in range(n):
+       discreteDistribution = DiscreteDistribution(probability_distribution)
+       next_page = discreteDistribution.sample(1)[0]
+       sample_pagerank_count[next_page] += 1
+       probability_distribution = transition_model(corpus, next_page, damping_factor)
+       
+    sample_pagerank = {key: round(value / n, 4) for key, value in sample_pagerank_count.items()}
+    return sample_pagerank
 
 
 def iterate_pagerank(corpus, damping_factor):
