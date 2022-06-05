@@ -14,7 +14,6 @@ def main():
         sys.exit("Usage: python pagerank.py corpus")
     corpus = crawl(sys.argv[1])
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
-    print(ranks)
     print(f"PageRank Results from Sampling (n = {SAMPLES})")
     for page in sorted(ranks):
         print(f"  {page}: {ranks[page]:.4f}")
@@ -62,22 +61,22 @@ def transition_model(corpus, page, damping_factor):
     """
 
     probability_distribution = dict()
-    random_page_probability = round((1 - damping_factor) / len(corpus), 4)
+    random_page_probability = (1 - damping_factor) / len(corpus)
 
     if len(corpus[page]) == 0:
         random_page_probability = 1 / len(corpus)
         for entry in corpus:
             probability_distribution[entry] = random_page_probability
     else:
-        link_page_probability = round(damping_factor / len(corpus[page]), 4)
+        link_page_probability = damping_factor / len(corpus[page])
         for entry in corpus:
             if entry in corpus[page]:
-                probability_distribution[entry] = round(link_page_probability + random_page_probability, 4)
+                probability_distribution[entry] = link_page_probability + random_page_probability
             else:
                 probability_distribution[entry] = random_page_probability
     return probability_distribution
 
-# TODO fix for corpus1 and corpus2
+
 def sample_pagerank(corpus, damping_factor, n):
     """
     Return PageRank values for each page by sampling `n` pages
@@ -118,24 +117,34 @@ def iterate_pagerank(corpus, damping_factor):
     page_count = len(corpus)
     for page in corpus:
         iterate_pagerank[page] = 1 / page_count
-    
+
+    unlinked_pages_numLinks = {}
+    for corpus_page in corpus:
+        if len(corpus[corpus_page]) == 0:
+            unlinked_pages_numLinks[corpus_page] = page_count
+
     # PR(p) = 1 - d / N + d Ei PR(i) / NumLinks(i)
 
-    for corpus_page in corpus:
-        # get pages that link to a page
-        linked_pages =  [page for page, pages in corpus.items() if corpus_page in pages]
-        # linked_pages =  [page for page, pages in corpus.items() if list(corpus.keys())[3] in pages]
+    diff_tracker = 0
+    while (diff_tracker < page_count):
+        diff_tracker = 0
+        for corpus_page in corpus:
+            i_pages =  [page for page, pages in corpus.items() if corpus_page in pages]
+            unlinked_pages_excluding_current = [page for page, pages in unlinked_pages_numLinks.items() if corpus_page not in page]
+            all_i_pages = i_pages + unlinked_pages_excluding_current
 
-        print(linked_pages)
+            sigma_sum = 0
+            for page in all_i_pages:
+                numLinks = page_count if (len(corpus[page]) == 0) else len(corpus[page])
+                # print(numLinks)
+                # print(iterate_pagerank[page])
+                sigma_sum += (iterate_pagerank[page] / numLinks)
 
-        sigma_sum = 0
-        for page in linked_pages:
-            sigma_sum += (iterate_pagerank[page] / len(linked_pages))
-
-        prob_page = ((1 - damping_factor) / page_count) + (damping_factor * sigma_sum)
-        iterate_pagerank[corpus_page] = prob_page
+            page_probability = ((1 - damping_factor) / page_count) + (damping_factor * sigma_sum)
+            if (abs(iterate_pagerank[corpus_page] - page_probability) < 0.001):
+                diff_tracker += 1
+            iterate_pagerank[corpus_page] = page_probability
     
-
     return iterate_pagerank
 
 
