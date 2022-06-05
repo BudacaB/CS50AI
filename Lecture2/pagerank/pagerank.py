@@ -113,35 +113,35 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
+    # PR(p) = 1 - d / N + d Ei PR(i) / NumLinks(i)
+
     iterate_pagerank = dict()
     page_count = len(corpus)
     for page in corpus:
         iterate_pagerank[page] = 1 / page_count
 
-    unlinked_pages_numLinks = {}
+    unlinked_pages = []
     for corpus_page in corpus:
         if len(corpus[corpus_page]) == 0:
-            unlinked_pages_numLinks[corpus_page] = page_count
-
-    # PR(p) = 1 - d / N + d Ei PR(i) / NumLinks(i)
+            unlinked_pages.append(corpus_page)
 
     diff_tracker = 0
     while (diff_tracker < page_count):
         diff_tracker = 0
         for corpus_page in corpus:
             i_pages =  [page for page, pages in corpus.items() if corpus_page in pages]
-            unlinked_pages_excluding_current = [page for page, pages in unlinked_pages_numLinks.items() if corpus_page not in page]
-            all_i_pages = i_pages + unlinked_pages_excluding_current
+            all_i_pages = i_pages + unlinked_pages
+            # excluding the current page if unlinked
+            if corpus_page in all_i_pages:
+                all_i_pages.remove(corpus_page)
 
             sigma_sum = 0
             for page in all_i_pages:
                 numLinks = page_count if (len(corpus[page]) == 0) else len(corpus[page])
-                # print(numLinks)
-                # print(iterate_pagerank[page])
                 sigma_sum += (iterate_pagerank[page] / numLinks)
 
             page_probability = ((1 - damping_factor) / page_count) + (damping_factor * sigma_sum)
-            if (abs(iterate_pagerank[corpus_page] - page_probability) < 0.001):
+            if (abs(iterate_pagerank[corpus_page] - page_probability) <= 0.001):
                 diff_tracker += 1
             iterate_pagerank[corpus_page] = page_probability
     
