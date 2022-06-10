@@ -87,7 +87,7 @@ Joint probability is the likelihood of multiple events all occurring.
     | c = ¬cloud | 0.02 | 0.58 |
 
     - for the probability distribution of P(c | r):
-        - P(c | r) = P(c, r) / R(r) 
+        - P(c | r) = P(c, r) / P(r) 
             -  <em>comma can be used for ^ (and)</em>
             - P(r) - a numerical constant used for the division, or put another way, for the multiplication with its inverse
         - to simplify mathematically: αP(c, r)

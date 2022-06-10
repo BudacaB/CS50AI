@@ -43,7 +43,6 @@ def main():
     if len(sys.argv) != 2:
         sys.exit("Usage: python heredity.py data.csv")
     people = load_data(sys.argv[1])
-    print(people)
 
     # Keep track of gene and trait probabilities for each person
     probabilities = {
@@ -80,10 +79,10 @@ def main():
 
                 # Update probabilities with new joint probability
                 p = joint_probability(people, one_gene, two_genes, have_trait)
-                update(probabilities, one_gene, two_genes, have_trait, p)
+                # update(probabilities, one_gene, two_genes, have_trait, p)
 
     # Ensure probabilities sum to 1
-    normalize(probabilities)
+    # normalize(probabilities)
 
     # Print results
     for person in people:
@@ -140,7 +139,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    raise NotImplementedError
+    names = set(people)
+    no_genes = names - one_gene - two_genes
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
