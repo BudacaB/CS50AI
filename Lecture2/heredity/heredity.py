@@ -2,6 +2,8 @@ import csv
 import itertools
 import sys
 
+from more_itertools import one
+
 PROBS = {
 
     # Unconditional probabilities for having gene
@@ -85,13 +87,13 @@ def main():
     # normalize(probabilities)
 
     # Print results
-    for person in people:
-        print(f"{person}:")
-        for field in probabilities[person]:
-            print(f"  {field.capitalize()}:")
-            for value in probabilities[person][field]:
-                p = probabilities[person][field][value]
-                print(f"    {value}: {p:.4f}")
+    # for person in people:
+    #     print(f"{person}:")
+    #     for field in probabilities[person]:
+    #         print(f"  {field.capitalize()}:")
+    #         for value in probabilities[person][field]:
+    #             p = probabilities[person][field][value]
+    #             print(f"    {value}: {p:.4f}")
 
 
 def load_data(filename):
@@ -139,8 +141,30 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
+    probs = dict()
     names = set(people)
     no_genes = names - one_gene - two_genes
+
+    for person in no_genes:
+        if (people[person]["mother"] == None and people[person]["father"] == None and person not in have_trait):
+            probs[person] = PROBS["gene"][0] * PROBS["trait"][0][False]
+        elif (people[person]["mother"] == None and people[person]["father"] == None and person in have_trait):
+            probs[person] = PROBS["gene"][0] * PROBS["trait"][0][True]
+
+    for person in one_gene:
+        if (people[person]["mother"] == None and people[person]["father"] == None and person not in have_trait):
+            probs[person] = PROBS["gene"][1] * PROBS["trait"][1][False]
+        elif (people[person]["mother"] == None and people[person]["father"] == None and person in have_trait):
+            probs[person] = PROBS["gene"][1] * PROBS["trait"][1][True]
+
+    for person in two_genes:
+        if (people[person]["mother"] == None and people[person]["father"] == None and person not in have_trait):
+            probs[person] = PROBS["gene"][2] * PROBS["trait"][2][False]
+        elif (people[person]["mother"] == None and people[person]["father"] == None and person in have_trait):
+            probs[person] = PROBS["gene"][2] * PROBS["trait"][2][True]
+
+    print(probs)
+    
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
