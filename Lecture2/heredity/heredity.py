@@ -146,11 +146,30 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     no_genes = names - one_gene - two_genes
 
     for person in no_genes:
+        prob_no_mom = 0
+        prob_no_dad = 0
         if (people[person]["mother"] == None and people[person]["father"] == None and person not in have_trait):
             probs[person] = PROBS["gene"][0] * PROBS["trait"][0][False]
         elif (people[person]["mother"] == None and people[person]["father"] == None and person in have_trait):
             probs[person] = PROBS["gene"][0] * PROBS["trait"][0][True]
-
+        elif (people[person]["mother"] != None and people[person]["father"] != None and person not in have_trait):
+            if (people[person]["mother"] in no_genes):
+                prob_no_mom = 0.99
+            elif (people[person]["mother"] in one_gene):
+                prob_no_mom = 0.49
+            elif (people[person]["mother"] in two_genes):
+                prob_no_mom = 0.01
+            if (people[person]["father"] in no_genes):
+                prob_no_dad = 0.99
+            elif (people[person]["father"] in one_gene):
+                prob_no_dad = 0.49
+            elif (people[person]["father"] in two_genes):
+                prob_no_dad = 0.01
+            if (person not in have_trait):
+                probs[person] = prob_no_mom * prob_no_dad * PROBS["trait"][0][False]
+            elif (person in have_trait):
+                probs[person] = prob_no_mom * prob_no_dad * PROBS["trait"][0][True]
+            
     for person in one_gene:
         if (people[person]["mother"] == None and people[person]["father"] == None and person not in have_trait):
             probs[person] = PROBS["gene"][1] * PROBS["trait"][1][False]
