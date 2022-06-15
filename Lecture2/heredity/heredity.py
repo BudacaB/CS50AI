@@ -2,8 +2,6 @@ import csv
 import itertools
 import sys
 
-from more_itertools import one
-
 PROBS = {
 
     # Unconditional probabilities for having gene
