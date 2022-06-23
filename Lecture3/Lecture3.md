@@ -19,14 +19,22 @@ https://cs50.harvard.edu/ai/2020/notes/3/
     - abstracting this concept, we can represent each configuration of houses and hospitals as the <b>state-space landscape</b> (see statespace.png). Each of the bars in the picture represents a value of a state, which in our example would be the cost of a certain configuration of houses and hospitals.
         - the height of a vertical bar is generally going to represent some function of that state / some value of that state - i.e. what is the cost of this particular config of hospitals in terms of what is the sum total of all the distances from all the houses to their nearest hospital
 - when we have a state-space landscape we want to do one of two things
-    - we might want to maximize the value of this function - trying to find the <b>global maximum</b> so to speak, of this state-space landscape - a single state whose value is higher than all of the other states that we can possibly choose from
+    - we might want to maximize the value of this function - trying to find the <b>global maximum</b> so to speak, of this state-space landscape - a single state whose value is higher than all of the other states that we can possibly choose from - (see maxima.png / minima.png) 
         - generally when we're trying to find the global maximum we'll call the function that we're trying to optimize - <b>objective function</b> - some function that measures for any given state how good is that state
         - we can take any state, pass it into the objective function and get a value for how good that state is
         - ultimately our goal is to find one of these states that has the highest possible value for that objective function
     - an equivalent but reverse problem is the problem of finding the <b>global minimum</b> - some state that has a value after we pass it into this function that is lower than all of the other possibl values that we might choose from
         - generally speaking when we're trying to find the global minimum, we call the function that we're calculating a <b>cost function</b>
         - generally each state has some sort of cost - whether that's a monetary cost, or a time cost, or a distance cost etc. - and we're trying to minimize the cost / find the state that has the lowest possible value of that cost
-- how do we a global maximum or a global minimum - in local search we generally operate this algo by maintaining just <b>a single state</b> - just a current state represented inside of some node maybe inside of a data structure, where we're keeping track where we are currently
+- how do we get a global maximum or a global minimum - in local search we generally operate this algo by maintaining just <b>a single state</b> - just a current state represented inside of some node maybe inside of a data structure, where we're keeping track where we are currently
     - ultimately from that state, we're going to move to one of its neighbor states - i.e. some state that is close to our current state, e.g. moving a hospital one space to the left, right, up or down etc. -> might have a slightly different value in terms of its objective function or cost function
 
 ### Hill Climbing
+
+- example of such a local search algorithm
+- you start by trying to maximize the value of your state - figure out the global maximum
+    - we start at a state and then consider the neighbors of that state
+    - for maximizing you will move to the higher state
+    - this happents until you get to a state which is higher than any of its neighbors
+    - trying then to find the global minimum, the algo works in the exact same way in reverse
+    - you then get to a state that is lower than any of its neighbors
