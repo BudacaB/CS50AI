@@ -29,7 +29,7 @@ https://cs50.harvard.edu/ai/2020/notes/3/
 - how do we get a global maximum or a global minimum - in local search we generally operate this algo by maintaining just <b>a single state</b> - just a current state represented inside of some node maybe inside of a data structure, where we're keeping track where we are currently
     - ultimately from that state, we're going to move to one of its neighbor states - i.e. some state that is close to our current state, e.g. moving a hospital one space to the left, right, up or down etc. -> might have a slightly different value in terms of its objective function or cost function
 
-### Hill Climbing
+## Hill Climbing
 
 - example of such a local search algorithm
 - you start by trying to maximize the value of your state - figure out the global maximum
@@ -65,3 +65,22 @@ function HILL-CLIMB(problem):
 | first-choice | choose the first higher-valued neighbor |
 | random-restart | conduct hill climbing multiple times - e.g. if you apply steepest-ascent hill climbing, you start at some random state, try and figure out how to solve the problem, and the randomly restart and try again with a new starting config; do this some number of times, you can pick the best one |
 | local beam search | chooses the <em>k</em> highest-valued neighbors - rather than keep track of just one current best state, such that rather than starting at one random initial config, you might start with three or four etc., randomly generate all the neighbors and then pick the three or four etc. best of the neighbors that you find and continue to repeat this process -> more options to consider or ways to navigate to the optimal solution that might exist for a particular problem |
+
+## Simulated Annealing
+
+- early on, high 'temperature': more likely to accept neighbors that are worse that current state
+- later on, lower 'temperature': less likely to accept neighbors that are worse than current state
+- pseudocode:
+
+```
+function SIMULATED-ANNEALING(problem, max):
+    current = initial state of problem
+    for t = 1 to max:
+        T = temperature(t) // based on the proportion of time - less likely to choose a worse spot as time decreases
+        neighbor = random neighbor of current
+        ΔE = how much better neighbor is than current
+        if ΔE > 0:
+            current = neighbor // based on temp / time but also on ΔE - if the neighbor is much worse than the current state we are less likely to choose it
+        with probability e^(ΔE/T) set current = neighbor // e is a constant -> result will be between 0 and 1
+    return current
+```
