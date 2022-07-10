@@ -101,3 +101,60 @@ function SIMULATED-ANNEALING(problem, max):
     -  A cost function that we want to minimize: c₁x₁ + c₂x₂ + … + cₙxₙ. Here, each x₋ is a variable and it is associated with some cost c₋.
     - A constraint that’s represented as a sum of variables that is either less than or equal to a value (a₁x₁ + a₂x₂ + … + aₙxₙ ≤ b) or precisely equal to this value (a₁x₁ + a₂x₂ + … + aₙxₙ = b). In this case, x₋ is a variable, and a₋ is some resource associated with it, and b is how much resources we can dedicate to this problem.
     - Individual bounds on variables (for example, that a variable can’t be negative) of the form lᵢ ≤ xᵢ ≤ uᵢ.
+
+### Example
+
+- two machines X<sub>1</sub> and X<sub>2</sub>. X<sub>1</sub> costs $50/hour to run, X<sub>2</sub> costs $80/hour to run.Goal is to minimize cost.
+- X<sub>1</sub> requires 5 units of labor per hour. X<sub>2</sub> requires 2 unis of labor per hour. Total of 20 units of labor to spend
+- X<sub>1</sub> produces 10 units of output per hour. X<sub>2</sub> produces 12 units of output per hour. Company needs 90 units of output
+- cost function: 50x<sub>1</sub> + 80x<sub>2</sub>
+- constraint: 5x<sub>1</sub> + 2x<sub>2</sub> <= 20
+- constraint: 10x<sub>1</sub> + 12X<sub>2</sub> >=90
+    - for keeping the <= we can re-write as
+        -10x<sub>1</sub> + (-12x<sub>2</sub>) <= -90
+
+### Algorithms
+
+- Simplex
+- Interior-Point
+
+## Constraint Satisfaction
+
+- a class of problems 
+    - basic idea is that we have some number of variables that need to take on some values
+    - we need to figure out what values each of those variables should take on
+    - those variables are subject to particular constraints that are going to limit what values those variables can actually take on
+- example (see constraintsatisfaction1.png):
+    - exam schedule
+    - you have 4 students 1, 2, 3 and 4
+    - each one of them is taking on some number of diff classes
+        - 1 - A, B, C
+        - 2 - B, D, E
+        - 3 - C, E, F
+        - 4 - E, F, G
+    - say the uni is trying to schedule exams for all of these courses, but there are only 3 exam slots - Mon, Tue, Wed
+    - we have to schedule an exam for each of these courses but the constraint that we have is that we don't want anyone to have to take two exams on the same day
+    - how to solve:
+        - let's represent every class as a node inside of a graph (see constraintsatisfaction2.png)
+        - we create an edge between two nodes on the graph if there is a constraint between those two nodes (e.g. the three classes taken by student A can't have an exam at the same time)
+        - we can call this the contraint graph - a graphical representation of all of your variables and the constraints between those possible variables (i.e. each constraint is an inequality constraint in this case)
+- put simple:
+    - set of variables {X<sub>1</sub>, X<sub>2</sub>, ... , X<sub>n</sub>}
+    - set of domains for each variable (D<sub>1</sub>, D<sub>2</sub>, ... , D<sub>n</sub>)
+    - set of constraints C
+- example:
+    - sudoku game (see sudoku.png)
+    - variables - all of the empty squares - {(0, 2), (1,1), (1, 2), (2, 0), ...}
+    - domains - any number from 1 to 9 that I could fill in for each variable - {1, 2, 3, 4, 5, 6, 7, 8, 9}
+    - constraints - cells need to be different in the 3 x 3 squares and by row and column - e.g {(0, 2) != (1, 1) != (1, 2) != (2, 0), ...}
+- back to the exam schedule example:
+    - variables - {A, B, C, D, E, F, G}
+    - domain - Mon, Tue, Wed
+    - constraints - {A != B, A != C, B != C, B != D, B != E, C != E, C != F, D != E, E != F, E != G, F != G } - formally i.e. for A and B for example, these two variable can't take on the same value within their domain
+- types of constrains:
+    - hard constraints - constraints that must be satisfied in a correct solution
+    - soft constraints - constraints that express some notion of which solutions are preferred over others - e.g. maybe A and B can't have an exam on the same day, but someone has a preference A's exam is earlier than B's exam - you can try to optimize for maximizing people's preferences, to be satisfied as much as possible
+- constrains classification
+    - unary constraints - constraint involving only one variable - e.g. {A != Monday} if the instructor isn't available for example
+    - binary constraint - constraint involving two variables - e.g. {A != B}
+-  <b>node consistency</b> - when all the values in a variable's domain satisfy the variable's unary constraints - we can say that the problem, or the variable, is node consistent
