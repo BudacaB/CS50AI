@@ -2,7 +2,6 @@ import os
 import random
 import re
 import sys
-import numpy as np
 
 DAMPING = 0.85
 SAMPLES = 10000
@@ -90,11 +89,11 @@ def sample_pagerank(corpus, damping_factor, n):
     starting_page_random_index = random.randint(0, len(corpus) - 1)
     starting_page = list(corpus)[starting_page_random_index]
     probability_distribution = transition_model(corpus, starting_page, damping_factor)
-    prob_dist_keys = list(probability_distribution.keys())
-    prob_dist_values = list(probability_distribution.values())
 
     for i in range(n):
-       next_page = np.random.choice(a=prob_dist_keys, size=1, p=prob_dist_values)[0]
+       prob_dist_keys = list(probability_distribution.keys())
+       prob_dist_values = list(probability_distribution.values())
+       next_page = random.choices(population=prob_dist_keys, weights=prob_dist_values, k=1)[0]
        sample_pagerank_count[next_page] += 1
        probability_distribution = transition_model(corpus, next_page, damping_factor)
        
