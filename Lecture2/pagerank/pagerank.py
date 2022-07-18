@@ -115,7 +115,7 @@ def iterate_pagerank(corpus, damping_factor):
     page_count = len(corpus)
     for page in corpus:
         iterate_pagerank[page] = 1 / page_count
-
+        
     unlinked_pages = []
     for corpus_page in corpus:
         if len(corpus[corpus_page]) == 0:
@@ -125,11 +125,11 @@ def iterate_pagerank(corpus, damping_factor):
     while (diff_tracker < page_count):
         diff_tracker = 0
         for corpus_page in corpus:
-            i_pages =  [page for page, pages in corpus.items() if corpus_page in pages]
+            i_pages = [page for page, pages in corpus.items() if corpus_page in pages]
             all_i_pages = i_pages + unlinked_pages
             # excluding the current page if unlinked
-            if corpus_page in all_i_pages:
-                all_i_pages.remove(corpus_page)
+            # if corpus_page in all_i_pages:
+            #     all_i_pages.remove(corpus_page)
 
             sigma_sum = 0
             for page in all_i_pages:
