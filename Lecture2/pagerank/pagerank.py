@@ -120,27 +120,31 @@ def iterate_pagerank(corpus, damping_factor):
     for corpus_page in corpus:
         if len(corpus[corpus_page]) == 0:
             unlinked_pages.append(corpus_page)
-
-    diff_tracker = 0
-    while (diff_tracker < page_count):
-        diff_tracker = 0
-        for corpus_page in corpus:
+    
+    i_pages_dict = dict()
+    for corpus_page in corpus:
             i_pages = [page for page, pages in corpus.items() if corpus_page in pages]
             all_i_pages = i_pages + unlinked_pages
-            # excluding the current page if unlinked
-            # if corpus_page in all_i_pages:
-            #     all_i_pages.remove(corpus_page)
+            i_pages_dict[corpus_page] = all_i_pages
 
+    diff_tracker = 1
+    ranks_sum = 0
+    while (diff_tracker >= 0.001 and ranks_sum < 1):
+        ranks_sum = 0
+        iterate_pagerank_temp = iterate_pagerank.copy()
+        diff_tracker = 0
+        for corpus_page in corpus:
             sigma_sum = 0
-            for page in all_i_pages:
+            for page in i_pages_dict[corpus_page]:
                 numLinks = page_count if (len(corpus[page]) == 0) else len(corpus[page])
                 sigma_sum += (iterate_pagerank[page] / numLinks)
 
             page_probability = ((1 - damping_factor) / page_count) + (damping_factor * sigma_sum)
-            if (abs(iterate_pagerank[corpus_page] - page_probability) <= 0.001):
-                diff_tracker += 1
             iterate_pagerank[corpus_page] = page_probability
-    
+            ranks_sum += page_probability
+        for key, value in iterate_pagerank_temp.items():
+            diff_tracker += abs(iterate_pagerank[key] - value)
+        
     return iterate_pagerank
 
 
