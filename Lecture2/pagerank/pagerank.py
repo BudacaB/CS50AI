@@ -129,7 +129,7 @@ def iterate_pagerank(corpus, damping_factor):
 
     diff_tracker = 1
     ranks_sum = 0
-    while (diff_tracker >= 0.001 and ranks_sum < 1):
+    while diff_tracker >= 0.001 or not 1 != ranks_sum:
         ranks_sum = 0
         iterate_pagerank_temp = iterate_pagerank.copy()
         diff_tracker = 0
