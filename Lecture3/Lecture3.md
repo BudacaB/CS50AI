@@ -158,3 +158,64 @@ function SIMULATED-ANNEALING(problem, max):
     - unary constraints - constraint involving only one variable - e.g. {A != Monday} if the instructor isn't available for example
     - binary constraint - constraint involving two variables - e.g. {A != B}
 -  <b>node consistency</b> - when all the values in a variable's domain satisfy the variable's unary constraints - we can say that the problem, or the variable, is node consistent
+    - example: classes A and B, each of which has an exam on either {Mon, Tue, Wed} (their domains)
+        - imagine we have these constraints: {A != Mon, B != Tue, B != Mon, A != B}
+        - we can try to enforce node consistency - we make sure that all of the values for any variable's domain satisfy it's unary constraints
+        - to start we can try to make A node consistent -> we remove Mon from its domain - now it's node consistent
+        - for B we remove Mon and Tue
+- <b>arc (edge) consistency</b> - when all the values in a variable's domain satisfy the variable's binary constraints
+    - to make X arc-consistent with respect to Y, remove elements from X's domain until every choice for X has a possible choice for Y
+    - going back to the previous example after node consistency A - {Tue, Wed} and B - {Wed} - to make A arc consistent with respect to B - you remove Wed from A's domain such that the binary constraint can't be violated
+    - you can try to apply the consistency to a larger graph and formalize an algorithm with pseudo-code that would enforce that consistency
+
+### Arc Consistency
+
+```
+function REVISE(csp, X, Y): //csp = constraint satisfaction problem ; make X arc consistent with respect to Y
+    revise = false
+    for x in X.domain:
+        if no y in Y.domain satisfies constraint for (X, Y):
+            delete x from X.domain
+            revised = true
+    return revised
+```
+
+- to enforce arc consistency across the entire problem:
+
+```
+function AC-3(csp):
+    queue = all arcs in csp
+    while queue non-empty:
+        (X, Y) = DEQUEUE(queue)
+        if REVISE(csp, X, Y): // if we do remove a value from X's domain, there's a risk that it was needed for another arc to be arc consistent
+            if size of X.domain == 0:
+                return false
+            for each Z in X.neighbors - {Y}:
+                ENQUEUE(queue, (Z, X))
+    return true
+```
+
+- the AC-3 can reduce domains in a larger graph, given enough options for values, to make it arc consistent - we only consider consistency between binary constraints between two nodes and we're not really considering all of the rest of the nodes
+- however it will not always actually solve the problem, we might still need to somehow search to try and find a solution - we can use classical, traditional search algos to try to do so
+
+## Search Problems
+
+- initial state
+- actions
+- transition model
+- goal test
+- path cost function
+
+## CSPs as Search Problems
+
+- initial state: empty assignment (no variables)
+- actions: add a {variable = value} to assignment
+- transition model: shows how adding an assignment changes the assignment
+- goal test: check if all variables assigned and constraints all satisfied
+- path cost function: all paths have same cost - we just care about the solution itself
+
+If we just implement this naive search algo by just implement DFS or BFS, this is going to be very inefficient, there are ways we can take advantage of the structure of the CSP
+- one of the key ideas is that the order that we assign the variables in doesn't matter
+- we can try to revise the search algo to apply it specifically for a problem like a CSP
+
+## Backtracking Search
