@@ -219,3 +219,63 @@ If we just implement this naive search algo by just implement DFS or BFS, this i
 - we can try to revise the search algo to apply it specifically for a problem like a CSP
 
 ## Backtracking Search
+
+- backtracking search is a type of a search algorithm that takes into account the structure of a constraint satisfaction search problem
+- in general, it is a recursive function that attempts to continue assigning values as long as they satisfy the constraints - if constraints are violated, it tries a different assignment
+
+```
+function BACKTRACK(assignment, csp): // assignment is initially empty - no values yet assigned to variables
+    if assignment complete: return assignment
+    var = SELECT-UNASSIGNED-VAR(assignment, csp)
+    for value in DOMAIN-VALUES(var, assignment, csp):
+        if value consistent with assignment:
+            add {var = value} to assignment
+            result = BACKTRACK(assignment, csp)
+            if result != failure: return result
+        remove {var = value} from assignment
+    return failure
+```
+
+- we can try to solve a problem like (see backtracking.png) - Mon, Tue, Wed as domain values and linked nodes can't have an exam on the same day
+- ultimately you might be able to be a little bit more intelligent about how you do this in order to improve the efficiency of how you solve these sorts of problems
+
+## Inference
+
+- using the knowledge you know to be able to draw conclusions in order to make the rest of the problem solving process a little bit easier
+- is there anything you can do to avoid getting into a situation or path that's ultimately not going to lead anywhere by taking advantage of the knowledge that you have initially?
+- <b>maintaining arc-consistency</b> algorithm for enforcing arc-consistency every time we make a new assignment
+    - sometimes you can enforce arc-consistency using the AC-3 algo at the very beginning of the problem, before you even begin searching in order to limit the domain and the variables in order to make it easier to search
+    - you can also take advantage of the interleaving of enforcing arc-consistency with search such that every time you make a new assignment in the search process, you go ahead and enforce arc consistency as well, to make sure that you eliminate possible values from domains whenever possible
+    - when you make a new assignment to X, call AC-3, starting with a queue of all arcs (Y, X) where Y is a neighbor of X
+- revised version of the backtrack function:
+
+```
+function BACKTRACK(assignment, csp): // assignment is initially empty - no values yet assigned to variables
+    if assignment complete: return assignment
+    var = SELECT-UNASSIGNED-VAR(assignment, csp)
+    for value in DOMAIN-VALUES(var, assignment, csp):
+        if value consistent with assignment:
+            add {var = value} to assignment
+            inferences = INFERENCE(assignment, csp)
+            if inferences != failure: add inferences to assignment
+            result = BACKTRACK(assignment, csp)
+            if result != failure: return result
+        remove {var = value} and inferences from assignment
+    return failure
+```
+
+- there are other heuristics you can use to try and improve the efficiency of the search process
+    - SELECT-UNASSIGNED-VAR() from the backtrack function - selecting some variable in the csp that has not yet been assigned - so far random, but by following certain heuristics you might be able to make the search process much more efficient just by choosing very carefully which variable we should explore next
+        - minimum remaining values (MRV) heuristic: select the variable that has the smallest domain
+        - degree heuristic (the degree of a node is the number of nodes that are attached to that node): select the variable that has the highest degree - this is immediately constrain the rest of the variables more and eliminate large senctions of the state space that you don't need to search through
+    - DOMAIN-VALUES() - getting back a sequence of all of the values inside a variable's domain - so far you've went in order -e.g. Mon, Tue, Wed ...
+        - it might be more efficient to choose values that are more likely to be solutions first
+        - least-constraining values heuristic: return variables in order by number of choices that are ruled out of neighboring variables
+            - try least-constraining value first
+
+## Conclusions
+
+- Problem formulation:
+    - local search
+    - linear programming
+    - constraint satisfaction
