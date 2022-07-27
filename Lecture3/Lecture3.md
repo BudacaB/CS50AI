@@ -104,7 +104,7 @@ function SIMULATED-ANNEALING(problem, max):
 
 ### Example
 
-- two machines X<sub>1</sub> and X<sub>2</sub>. X<sub>1</sub> costs $50/hour to run, X<sub>2</sub> costs $80/hour to run.Goal is to minimize cost.
+- two machines X<sub>1</sub> and X<sub>2</sub>. X<sub>1</sub> costs $50/hour to run, X<sub>2</sub> costs $80/hour to run. Goal is to minimize cost.
 - X<sub>1</sub> requires 5 units of labor per hour. X<sub>2</sub> requires 2 unis of labor per hour. Total of 20 units of labor to spend
 - X<sub>1</sub> produces 10 units of output per hour. X<sub>2</sub> produces 12 units of output per hour. Company needs 90 units of output
 - cost function: 50x<sub>1</sub> + 80x<sub>2</sub>
