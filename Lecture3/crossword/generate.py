@@ -1,4 +1,7 @@
+import copy
 import sys
+
+from numpy import var
 
 from crossword import *
 
@@ -99,7 +102,12 @@ class CrosswordCreator():
         (Remove any values that are inconsistent with a variable's unary
          constraints; in this case, the length of the word.)
         """
-        raise NotImplementedError
+        temp_domains = copy.deepcopy(self.domains)
+        for variable in self.domains.copy():
+            for word in self.domains[variable]:
+                if (len(word) != variable.length):
+                    temp_domains[variable].remove(word)
+        self.domains = temp_domains
 
     def revise(self, x, y):
         """
