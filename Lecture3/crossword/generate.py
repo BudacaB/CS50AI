@@ -1,4 +1,5 @@
 import copy
+from pickle import FALSE, TRUE
 import sys
 
 from numpy import var
@@ -93,7 +94,6 @@ class CrosswordCreator():
         Enforce node and arc consistency, and then solve the CSP.
         """
         self.enforce_node_consistency()
-        self.revise(list(self.crossword.variables)[0], list(self.crossword.variables)[1]) # TODO - remove
         self.ac3()
         return self.backtrack(dict())
 
@@ -119,9 +119,22 @@ class CrosswordCreator():
         Return True if a revision was made to the domain of `x`; return
         False if no revision was made.
         """
-        print(self.crossword.overlaps[x])
-        # for word in self.domains[y]:
-        #     print(word)
+        revised = False
+        if (self.crossword.overlaps[x, y] != None):
+            x_overlap_index = self.crossword.overlaps[x, y][0]
+            y_overlap_index = self.crossword.overlaps[x, y][1]
+
+            y_overlap_letters = set()
+            for word in self.domains[y]:
+                y_overlap_letters.add(word[y_overlap_index])
+
+            temp_domains = copy.deepcopy(self.domains)
+            for word in self.domains[x]:
+                if (word[x_overlap_index] not in y_overlap_letters):
+                    temp_domains[x].remove(word)
+                    revised = True
+            self.domains = temp_domains
+        return revised
 
     def ac3(self, arcs=None):
         """
@@ -132,7 +145,19 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        raise NotImplementedError
+        if arcs == None:
+            arcs = [k for k, v in self.crossword.overlaps.items() if v != None]
+        while (len(arcs) != 0):
+            arc = arcs.pop()
+            if (self.revise(arc[0], arc[1])):
+                if (len(self.domains[arc[0]]) == 0):
+                    return False
+                neighbors = self.crossword.neighbors(arc[0])
+                neighbors.remove(arc[1]) # remove the other node of the arc
+                if (neighbors != None):
+                    for variable in neighbors:
+                        arcs.append((variable, arc[0]))
+        return True
 
     def assignment_complete(self, assignment):
         """
