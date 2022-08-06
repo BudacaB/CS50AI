@@ -1,8 +1,5 @@
 import copy
-from pickle import FALSE, TRUE
 import sys
-
-from numpy import var
 
 from crossword import *
 
@@ -95,6 +92,12 @@ class CrosswordCreator():
         """
         self.enforce_node_consistency()
         self.ac3()
+        test_dict = {
+            Variable(0, 1, 'across', 3): 'tes',
+            Variable(4, 1, 'across', 4): 'fizz',
+            Variable(1, 4, 'down', 4): 'buzz'
+        }
+        print(self.consistent(test_dict))
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
@@ -106,7 +109,7 @@ class CrosswordCreator():
         temp_domains = copy.deepcopy(self.domains)
         for variable in self.domains.copy():
             for word in self.domains[variable]:
-                if (len(word) != variable.length):
+                if len(word) != variable.length:
                     temp_domains[variable].remove(word)
         self.domains = temp_domains
 
@@ -120,7 +123,7 @@ class CrosswordCreator():
         False if no revision was made.
         """
         revised = False
-        if (self.crossword.overlaps[x, y] != None):
+        if self.crossword.overlaps[x, y] is not None:
             x_overlap_index = self.crossword.overlaps[x, y][0]
             y_overlap_index = self.crossword.overlaps[x, y][1]
 
@@ -130,7 +133,7 @@ class CrosswordCreator():
 
             temp_domains = copy.deepcopy(self.domains)
             for word in self.domains[x]:
-                if (word[x_overlap_index] not in y_overlap_letters):
+                if word[x_overlap_index] not in y_overlap_letters:
                     temp_domains[x].remove(word)
                     revised = True
             self.domains = temp_domains
@@ -145,16 +148,16 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        if arcs == None:
-            arcs = [k for k, v in self.crossword.overlaps.items() if v != None]
-        while (len(arcs) != 0):
+        if arcs is None:
+            arcs = [k for k, v in self.crossword.overlaps.items() if v is not None]
+        while len(arcs) != 0:
             arc = arcs.pop()
-            if (self.revise(arc[0], arc[1])):
-                if (len(self.domains[arc[0]]) == 0):
+            if self.revise(arc[0], arc[1]):
+                if len(self.domains[arc[0]]) == 0:
                     return False
                 neighbors = self.crossword.neighbors(arc[0])
-                neighbors.remove(arc[1]) # remove the other node of the arc
-                if (neighbors != None):
+                neighbors.remove(arc[1])  # remove the other node of the current arc
+                if neighbors is not None:
                     for variable in neighbors:
                         arcs.append((variable, arc[0]))
         return True
@@ -164,13 +167,13 @@ class CrosswordCreator():
         Return True if `assignment` is complete (i.e., assigns a value to each
         crossword variable); return False otherwise.
         """
-        if (len(assignment) != 0):
+        if len(assignment) != 0:
             assignment_vars = list(assignment.keys())
             for var in self.crossword.variables:
-                if (var not in assignment_vars):
-                     return False
+                if var not in assignment_vars:
+                    return False
             for key, value in assignment.items():
-                if (key not in self.crossword.variables or value == None or value == ""):
+                if key not in self.crossword.variables or value is None or value == "":
                     return False
         else:
             return False
@@ -181,7 +184,16 @@ class CrosswordCreator():
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
-        raise NotImplementedError
+        words = []
+        for key, value in assignment.items():
+            if key.length != len(value):
+                return False
+            words.append(value)
+        for i in range(len(words)):
+            for j in range(i + 1, len(words)):
+                if words[i] == words[j]:
+                    return False
+        return True
 
     def order_domain_values(self, var, assignment):
         """
@@ -215,7 +227,6 @@ class CrosswordCreator():
 
 
 def main():
-
     # Check usage
     if len(sys.argv) not in [3, 4]:
         sys.exit("Usage: python generate.py structure words [output]")
