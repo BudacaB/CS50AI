@@ -92,12 +92,14 @@ class CrosswordCreator():
         """
         self.enforce_node_consistency()
         self.ac3()
-        test_dict = {
-            Variable(0, 1, 'across', 3): 'tes',
-            Variable(4, 1, 'across', 4): 'fizz',
-            Variable(1, 4, 'down', 4): 'buzz'
-        }
-        print(self.consistent(test_dict))
+        # TODO - remove
+        # test_dict = {
+        #     Variable(0, 1, 'across', 3): 'tes',
+        #     Variable(4, 1, 'across', 4): 'yizz',
+        #     Variable(1, 4, 'down', 4): 'buzz',
+        #     Variable(0, 1, 'down', 5): 'testy'
+        # }
+        # print(self.consistent(test_dict))
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
@@ -188,6 +190,13 @@ class CrosswordCreator():
         for key, value in assignment.items():
             if key.length != len(value):
                 return False
+            neighbors = self.crossword.neighbors(key)
+            for neighbor in neighbors:
+                if self.crossword.overlaps[key, neighbor] is not None:
+                    key_overlap_index = self.crossword.overlaps[key, neighbor][0]
+                    neighbor_overlap_index = self.crossword.overlaps[key, neighbor][1]
+                    if value[key_overlap_index] != assignment[neighbor][neighbor_overlap_index]:
+                        return False
             words.append(value)
         for i in range(len(words)):
             for j in range(i + 1, len(words)):
