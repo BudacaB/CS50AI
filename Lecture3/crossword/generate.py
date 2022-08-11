@@ -93,13 +93,13 @@ class CrosswordCreator():
         self.enforce_node_consistency()
         self.ac3()
         # TODO - remove
-        # test_dict = {
-        #     Variable(0, 1, 'across', 3): 'tes',
-        #     Variable(4, 1, 'across', 4): 'yizz',
-        #     Variable(1, 4, 'down', 4): 'buzz',
-        #     Variable(0, 1, 'down', 5): 'testy'
-        # }
-        # print(self.consistent(test_dict))
+        test_dict = {
+            # Variable(0, 1, 'across', 3): 'tes',
+            Variable(4, 1, 'across', 4): 'yizz',
+            Variable(1, 4, 'down', 4): 'buzz',
+            # Variable(0, 1, 'down', 5): 'testy'
+        }
+        print(self.order_domain_values(Variable(0, 1, 'across', 3), test_dict))
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
@@ -211,7 +211,22 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        raise NotImplementedError
+        values = []
+        assignment_vars = set(assignment.keys())
+        vars_to_check = self.crossword.variables - assignment_vars
+        vars_to_check.remove(var)  # remove the var being checked
+        values_dict = {el: 0 for el in self.domains[var]}
+        if len(vars_to_check) != 0:
+            for variable in vars_to_check:
+                if self.crossword.overlaps[variable, var] is not None:
+                    variable_overlap_index = self.crossword.overlaps[variable, var][0]
+                    var_overlap_index = self.crossword.overlaps[variable, var][1]
+                    for var_word in self.domains[var]:
+                        print(self.domains[variable])
+                        for variable_word in self.domains[variable]:
+                            if variable_word[variable_overlap_index] != var_word[var_overlap_index]:
+                                values_dict[var_word] += 1
+        return values
 
     def select_unassigned_variable(self, assignment):
         """
