@@ -99,7 +99,6 @@ class CrosswordCreator():
             # Variable(1, 4, 'down', 4): 'buzz',
             # Variable(0, 1, 'down', 5): 'testy'
         }
-        print(self.order_domain_values(Variable(1, 4, 'down', 4), test_dict))
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
@@ -236,7 +235,24 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        raise NotImplementedError
+        assignment_vars = set(assignment.keys())
+        vars_to_check = self.crossword.variables - assignment_vars
+
+        domain_dict = dict()
+        if len(vars_to_check) != 0:
+            for var in vars_to_check:
+                domain_dict[var] = len(self.domains[var])
+            min_val = min(domain_dict.values())
+            domain_vars = [k for k, v in domain_dict.items() if v == min_val]
+
+        degree_dict = dict()
+        if len(domain_vars) > 1:
+            for var in domain_vars:
+                degree_dict[var] = len(self.crossword.neighbors(var))
+            max_val = max(degree_dict.values())
+            degree_vars = [k for k, v in degree_dict.items() if v == max_val]
+            return degree_vars[0]
+        return domain_vars[0]
 
     def backtrack(self, assignment):
         """
