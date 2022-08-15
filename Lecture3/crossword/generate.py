@@ -239,6 +239,7 @@ class CrosswordCreator():
         vars_to_check = self.crossword.variables - assignment_vars
 
         domain_dict = dict()
+        domain_vars = []
         if len(vars_to_check) != 0:
             for var in vars_to_check:
                 domain_dict[var] = len(self.domains[var])
