@@ -191,7 +191,7 @@ class CrosswordCreator():
                 return False
             neighbors = self.crossword.neighbors(key)
             for neighbor in neighbors:
-                if self.crossword.overlaps[key, neighbor] is not None:
+                if self.crossword.overlaps[key, neighbor] is not None and neighbor in assignment:
                     key_overlap_index = self.crossword.overlaps[key, neighbor][0]
                     neighbor_overlap_index = self.crossword.overlaps[key, neighbor][1]
                     if value[key_overlap_index] != assignment[neighbor][neighbor_overlap_index]:
@@ -264,8 +264,17 @@ class CrosswordCreator():
 
         If no assignment is possible, return None.
         """
-        raise NotImplementedError
-
+        if self.assignment_complete(assignment):
+            return assignment
+        variable = self.select_unassigned_variable(assignment)
+        for value in self.order_domain_values(variable, assignment):
+            new_assignment = assignment.copy()
+            new_assignment[variable] = value
+            if self.consistent(new_assignment):
+                result = self.backtrack(new_assignment)
+                if result is not None:
+                    return result
+        return None
 
 def main():
     # Check usage
