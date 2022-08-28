@@ -92,13 +92,6 @@ class CrosswordCreator():
         """
         self.enforce_node_consistency()
         self.ac3()
-        # TODO - remove
-        test_dict = {
-            Variable(0, 1, 'across', 3): 'tes',
-            # Variable(4, 1, 'across', 4): 'yizz',
-            # Variable(1, 4, 'down', 4): 'buzz',
-            # Variable(0, 1, 'down', 5): 'testy'
-        }
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
@@ -291,7 +284,9 @@ class CrosswordCreator():
                 new_assignment.pop(neighbor)
         return None
 
+
 def main():
+
     # Check usage
     if len(sys.argv) not in [3, 4]:
         sys.exit("Usage: python generate.py structure words [output]")
