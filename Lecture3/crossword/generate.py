@@ -267,13 +267,28 @@ class CrosswordCreator():
         if self.assignment_complete(assignment):
             return assignment
         variable = self.select_unassigned_variable(assignment)
+
+        neighbors = self.crossword.neighbors(variable)
+        arcs = []
+        for neighbor in neighbors:
+            arcs.append((neighbor, variable))
+
         for value in self.order_domain_values(variable, assignment):
             new_assignment = assignment.copy()
             new_assignment[variable] = value
+            neighbors_with_inference = []
+            if self.ac3(list(arcs)):
+                for neighbor in neighbors:
+                    if len(self.domains[neighbor]) == 1:
+                        neighbors_with_inference.append(neighbor)
+                        new_assignment[neighbor] = list(self.domains[neighbor])[0]
             if self.consistent(new_assignment):
                 result = self.backtrack(new_assignment)
                 if result is not None:
                     return result
+            new_assignment.pop(variable)
+            for neighbor in neighbors_with_inference:
+                new_assignment.pop(neighbor)
         return None
 
 def main():
