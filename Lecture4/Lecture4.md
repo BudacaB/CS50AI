@@ -34,3 +34,49 @@ f(humidity, pressure)
 ```aidl
 h(humidity, pressure)
 ```
+
+- we can try to plot on a graph, the rainy (blue) and non rainy days (red) (see classification.png)
+  - the computer should train a model such that if you are presented with a new input that does not have a label (the white dot), it can predict in which category it would most likely fit into
+  - graphically the dot probably belongs to the blue category - it's closer to the blue dots
+
+## Nearest-neighbor Classification
+
+- algorithm that, given an input, chooses the class of the nearest data point to that input
+- there are exceptions, for example a point that is closest to a red point, but is surrounded by blue points -> considering more than just a single neighbor, but multiple neighbors can sometimes give us a better result
+
+### K-nearest-neighbor classification
+
+- algorithm that, given an input, chooses the most common class out of the k nearest data points to that input
+  - e.g. if we look at the five nearest points and three say it's raining and two say it's not, then you'll go with the three instead of the two
+- algorithms have their trade-offs depending on the data
+- ML research ends up being about trying multiple different algorithms to see what will bring the best results
+- a drawback of the k-nearest-neighbors classification is that, using a naive approach, the algorithm will have to measure the distance of every single point to the point in question, which is computationally expensive
+  - this can be sped up by using data structures that enable finding neighbors more quickly or by pruning irrelevant observation.
+
+## Perceptron Learning
+
+- another way of going about a classification problem, as opposed to the nearest-neighbor strategy, is looking at the data as a whole and trying to create a decision boundary (see decisionboundary.png)
+  - in two-dimensional data, we can draw a line between the two types of observations - every additional data point will be classified based on the side of the line on which it is plotted
+  - the technique used is called <b>linear regression</b>
+  - realistically this example is cleaner than many data sets will actually be, often times the data is messy, there are outliers, or random noise etc. - in practice the data will not always be linearly separable
+  - there may not be a line that perfectly separates one half of the inputs from the other half but we can say it does a pretty good job - this will be later better formalized
+- formalizing:
+  - inputs:
+    - x<sub>1</sub> = Humidity
+    - x<sub>2</sub> = Pressure
+  - hypothesis function h(x<sub>1</sub>, x<sub>2</sub>) = Rain (1) if w<sub>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> >= 0 ; No Rain (0) otherwise
+    - how do we formalize the boundary - the boundary's generally going to be a linear combination of these input variables in this particular case
+      - you take each of these inputs and multiply them by some number that you're going to have to figure out - generally called a <em>weight</em> - for how important should these variables be in trying to determine the answer
+      - you'll weight each of these variables with some weight and you might add a constant to it just to try and make the function a little bit different (e.g. w<sub>0</sub>) because the function might require you to shift the value up or down by a certain amount
+      - the result you just need to compare - is it greater than 0 or is it less than 0 - does it belong on one side of the line, or the other
+      - the function expression is in this case going to refer to just some line if you were to plot that graphically - what it looks like depends upon the weights
+      - often times this kind of expression will instead express using vector math (a sequence of numerical values - e.g. in python that could be a list of numerical values or a tuple)
+      - here we have a couple of vectors - one is for the individual weights  -> you can construct a Weight Vector w: (w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>)
+        - to be able to calculate based on those weights whether you think it's raining or not raining, you're going to multiply each of those weights by one of the input variables
+        - in this way you will also have an Input Vector x: (1, x<sub>1</sub>, x<sub>2</sub>)
+      - so now you've represented two distinct vectors
+        - a vector of weights that you need to somehow learn - this is the goal of the ML algorithm
+        - an input vector - represents a particular input to the function, a data point for which we'd like to estimate
+        - to do the calculation - you calculate the function expression - that's what's called the <b>dot product</b> of these two vectors
+          - the dot product is the multiplication of each of the terms of the vectors and then adding the results
+            - w . x = w<sub>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub>
