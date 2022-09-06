@@ -80,3 +80,22 @@ h(humidity, pressure)
         - to do the calculation - you calculate the function expression - that's what's called the <b>dot product</b> of these two vectors
           - the dot product is the multiplication of each of the terms of the vectors and then adding the results
             - w . x = w<sub>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub>
+    - a simpler representation: h<sub>w</sub>(x) = 1 if w . x >=0 ; 0 otherwise
+      - we say that the hypothesis is parametrized by the weight - depending on what weights we choose we end up getting a diff hypothesis
+- how do you figure out how these weights should be?
+
+### Perceptron learning rule
+
+- given data point (x, y)- input x and output y where y is like 1 for Rain and 0 for No Rain - update each weight according to: 
+  - w<sub>i</sub> = w<sub>i</sub> + α(y - h<sub>w</sub>(x)) * x<sub>i</sub>
+- the big picture idea is that you can start with random weights but then learn from the data
+  - take the data points one at a time and for each of them figure out what parameters do you need to change inside of the weights in order to better match that input
+  - the formula is equivalent to w<sub>i</sub> = w<sub>i</sub> + α(actual - estimate) * x<sub>i</sub>
+  - if you are able to predict what category the data point belongs to (actual - estimate = 0), then the weight wouldn't change
+  - if not then the weights must be adjusted for the future - adjust the actual value and the estimate as needed
+    - if the actual value was bigger than the estimate - you need to increase the weight in order to make it such that the output is bigger
+    - if the actual value is less than an estimate you want to decrease the value of the weight in order to lower the output
+- α is what is called the 'learning rate' - it's some parameter you choose for how quicly we're' actually going to be updateding these weight values
+- after all this you end up with a threshold function (see hardthreshold.png)
+  - anything on each side of the line belongs to a diff category
+  - the issue with this is that it leaves two possible outcomes
