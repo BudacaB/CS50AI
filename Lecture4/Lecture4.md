@@ -86,7 +86,7 @@ h(humidity, pressure)
 
 ### Perceptron learning rule
 
-- given data point (x, y)- input x and output y where y is like 1 for Rain and 0 for No Rain - update each weight according to: 
+- given data point (x, y) - input x and output y where y is like 1 for Rain and 0 for No Rain - update each weight according to: 
   - w<sub>i</sub> = w<sub>i</sub> + α(y - h<sub>w</sub>(x)) * x<sub>i</sub>
 - the big picture idea is that you can start with random weights but then learn from the data
   - take the data points one at a time and for each of them figure out what parameters do you need to change inside of the weights in order to better match that input
@@ -99,3 +99,5 @@ h(humidity, pressure)
 - after all this you end up with a threshold function (see hardthreshold.png)
   - anything on each side of the line belongs to a diff category
   - the issue with this is that it leaves two possible outcomes
+  - since it uses only 1 and 0, it employs a <b>hard thresohold</b>
+- a way to go around this is by using a logistic function, which employs a fost threshold
