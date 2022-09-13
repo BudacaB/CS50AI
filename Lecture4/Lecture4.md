@@ -100,4 +100,9 @@ h(humidity, pressure)
   - anything on each side of the line belongs to a diff category
   - the issue with this is that it leaves two possible outcomes
   - since it uses only 1 and 0, it employs a <b>hard thresohold</b>
-- a way to go around this is by using a logistic function, which employs a fost threshold
+- a way to go around this is by using a logistic function, which employs a soft threshold (see softthreshold.png)
+
+## Support Vector Machines
+
+- in addition to nearest-neighbor and linear regression, another approach to classification is the Support Vector Machine
+- this approach uses an additional vector (support vector) near the decision boundary to make the best decision when separating the data
