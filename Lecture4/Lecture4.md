@@ -106,3 +106,68 @@ h(humidity, pressure)
 
 - in addition to nearest-neighbor and linear regression, another approach to classification is the Support Vector Machine
 - this approach uses an additional vector (support vector) near the decision boundary to make the best decision when separating the data
+- they are trying to find the <b>maximum margin separator</b>
+  - boundary that maximizes the distance between any of the data points (see supportvector.png)
+  - this can be done both in 2D and also in higher dimensions; or even if the data isn't linearly separable (see circleboundary.png)
+
+
+## Regression
+
+- regression is a supervised learning task of a function that maps an input point to a continuous value, some real number 
+  - this differs from classification in that classification problems map an input to discrete values (Rain or No Rain)
+- e.g. sales generated based on ad expenses
+
+```aidl
+f(advertising)
+f(1200) = 5800
+f(2800) = 13400
+etc.
+```
+
+- and you would like to predict some sort of hypothesis function - that can predict, given the amount spent on advertising, some real number estimate of how much sales can be expected
+
+```aidl
+h(advertising)
+```
+
+- we could try to use linear regression - this time not approximating discrete categories, but instead approximate this relationship between advertising and sales (see regression.png)
+
+## Evaluating Hypotheses
+
+- this is kind of like an optimization problem - either try to maximize some objective function by trying to find a global maximum, or trying to minimize some cost function by trying to find a global minimum
+- in the case of evaluating hypotheses - this cost function, the thing you're trying to minimize, you might be trying to minimize a <b>loss function</b>
+  - function that expresses how poorly our hypothesis performs - or a loss of utility -> whenever you predict something that is wrong, that's a loss of utility that's going to add to the output of the loss function
+
+### 0-1 loss function
+
+- L(actual, predicted) = 0 if actual = predicted, 1 otherwise (see 01loss.png)
+
+### L1 loss function
+
+- L(actual, predicted) = |actual - predicted|
+- for continuous values, we want to take into account also the difference between the prediction and reality (see l1.png)
+- better for cases where there are a lot of outliers, and you don't necessarily care about modelling them
+
+### L2 loss function
+
+- L(actual, predicted) = (actual-predicted)<sup>2</sup>
+- penalizes much more harshly anything that is a worse prediction
+- better suited to minimize the error on more outlier cases
+
+## Overfitting
+
+- a model that fits too closely to a particular data set and therefore may fail to generalize to future data
+- an extreme decision boundary can be not so good as a prediction even if more accurate - it won't generalize well (see overfitting.png)
+- this can happen both in classification and also in regression (see overfitting.png)
+- you want to use strategies to make sure that you don't overfit the model to a particular data set
+  - one way is to examine what it is that you're optimizing for
+    - in an optimization problem all you do is think about some cost and you want to minimize it
+    - so far you've defined that function just as being cost(h) = loss(h)
+    - you want to add something extra -> cost(h) = loss(h) + complexity(h) - how complicated does the line look? - Occam's razor type approach to give preference to a simpler decision boundary (e.g. a straight line)
+    - if it's much more complex, you need to come up with some balance between loss and complexity - often represented as multiplying the complexity by some parameter (lambda)
+      - cost(h) = loss(h) + λcomplexity(h) -> if lambda is greater, then you really penalize more complex hypotheses - if lambda is smaller you penalize more complex hypotheses a little bit
+
+### Regularization
+
+- penalizing hypotheses that are more complex to favor simpler, more general hypotheses
+- cost(h) = loss(h) + λcomplexity(h)
