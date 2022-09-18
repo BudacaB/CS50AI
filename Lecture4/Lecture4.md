@@ -171,3 +171,20 @@ h(advertising)
 
 - penalizing hypotheses that are more complex to favor simpler, more general hypotheses
 - cost(h) = loss(h) + λcomplexity(h)
+
+### Holdout cross-validation
+
+- splitting data into a training set and a test set, such that learning happens on the training set and is evaluated on the test set
+- <b>k-fold cross-validation</b> - splitting data into <em>k</em> sets, and experimenting <em>k</em> times, using each set as a test set once, and using remaining data as training set
+
+## scikit-learn
+
+- as often is the case with Python, there are multiple libraries that allow us to conveniently use machine learning algorithms, one of such libraries is scikit-learn
+
+## Reinforcement Learning
+
+- given a set of rewards or punishments, some agent learns what actions to take in the future (see reinforcement.png)
+
+## Markov Decision Process
+
+- model for decision-making, representing states, actions, and their rewards
