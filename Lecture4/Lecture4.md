@@ -187,4 +187,14 @@ h(advertising)
 
 ## Markov Decision Process
 
-- model for decision-making, representing states, actions, and their rewards
+- model for decision-making, representing states, actions, and their rewards - similar to a Markov Chain but with an agent (see markov.png)
+- properties:
+  - set of states S
+  - set of actions ACTION(s)
+  - transition model P(s' | s, a)
+  - reward function R(s, a, s')
+
+## Q-learning
+
+- method for learning a function Q(s, a), estimate of the value of performing action <em>a</em> in state <em>s</em>
+- 
