@@ -197,4 +197,7 @@ h(advertising)
 ## Q-learning
 
 - method for learning a function Q(s, a), estimate of the value of performing action <em>a</em> in state <em>s</em>
-- 
+- start with Q(s, a) = 0 for all <em>s, a</em>
+- when you take an action and receive an award
+  - estimate the new value of Q(s, a) based on current reward and expected future rewards
+  - update Q(s, a) to take into account old estimate as well as your new estimate
