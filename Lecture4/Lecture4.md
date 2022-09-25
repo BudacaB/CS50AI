@@ -201,3 +201,17 @@ h(advertising)
 - when you take an action and receive an award
   - estimate the new value of Q(s, a) based on current reward and expected future rewards
   - update Q(s, a) to take into account old estimate as well as your new estimate
+- how this works:
+  - start with Q(s, a) = 0 for all s, a
+  - every time you take an action a in state s and observe reward r, you update:
+    - Q(s, a) <- Q(s, a) + α(new value estimate - Q(s, a))
+      - the updated value of Q(s, a) is equal to the previous value of Q(s, a) in addition to some updating value - this value is determined as the difference between the new value and the old value, multiplied by α, a learning coefficient
+      - when α = 1 the new estimate simply overwrites the old one. When α = 0, the estimated value is never updated - by raising and lowering α, you can determine how fast previous knowledge is being updated by new estimates
+    - can be rewritten as Q(s, a) <- Q(s, a) + α((r + future reward estimate) - Q(s, a))
+      - new value estimate is composed of what reward did you just get from taking this action in this state, and what you can expect your future reward to be from this point forward
+    - can be rewritten as Q(s, a) <- Q(s, a) + α((r + max<sub>a'</sub>Q(s', a')) - Q(s, a))
+      - take the maximum across all possible actions you could take next - which one will have the highest reward
+    - sometimes the value of the future reward estimate can sometimes appear with a coefficient gamma that controls how much future rewards are valued - reward now vs reward later
+      - Q(s, a) <- Q(s, a) + α((r + γmax<sub>a'</sub>Q(s', a')) - Q(s, a))
+
+### Greedy Decision-Making
