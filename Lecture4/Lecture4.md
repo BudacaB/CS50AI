@@ -215,3 +215,46 @@ h(advertising)
       - Q(s, a) <- Q(s, a) + α((r + γmax<sub>a'</sub>Q(s', a')) - Q(s, a))
 
 ### Greedy Decision-Making
+
+- when in state <em>s</em>, choose action <em>a</em> with highest Q(s, a)
+
+### Explore vs Exploit
+
+- exploitation - using knowledge that the AI already has
+- exploration - exploring other action that weren't explored before -> one of them might lead to better reward, faster
+
+### ε-greedy (Epsilon greedy algorithm)
+
+- set ε equal to how often we want to move randomly
+- with probability 1 - ε, choose estimated best move
+- with probability ε, choose a random move
+
+### Function approximation
+
+- approximating Q(s, a), often by a function combining various features, rather than storing one value for every state-action pair
+- this type of approach can be quite helpful when dealing with reinforcement learning that exists in larger and larger state spaces where it's just not feasible to explore all the possible states that could actually exist
+
+## Unsupervised Learning 
+
+- given input data without any additional feedback, learn patterns
+
+### Clustering
+
+- organizing a set of objects into groups in such a way that similar objects tend to be in the same group
+- some clustering applications
+  - genetic research
+  - image segmentation
+  - market research
+  - medical imaging
+  - social network analysis
+
+### k-means clustering
+
+- algorithm for clustering data based on repeatedly assigning points to clusters and updating those clusters' centers (see kclustering.png)
+- a cluster center is moved around - it will define that cluster (the middle of the cluster) - and then you re/assign points to that cluster based on which center is closest to that point
+
+## Learning
+
+- Supervised Learning
+- Reinforcement Learning
+- Unsupervised Learning
