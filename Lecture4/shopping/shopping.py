@@ -59,7 +59,10 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
+    with open(filename, newline='') as csvfile:
+        data_reader = csv.reader(csvfile)
+        for row in data_reader:
+            print(row)
 
 
 def train_model(evidence, labels):
