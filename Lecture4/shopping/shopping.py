@@ -1,4 +1,5 @@
 import csv
+import math
 import sys
 
 from sklearn.model_selection import train_test_split
@@ -8,7 +9,6 @@ TEST_SIZE = 0.4
 
 
 def main():
-
     # Check command-line arguments
     if len(sys.argv) != 2:
         sys.exit("Usage: python shopping.py data")
@@ -59,10 +59,16 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
+    evidence = []
+    labels = []
     with open(filename, newline='') as csvfile:
-        data_reader = csv.reader(csvfile)
-        for row in data_reader:
-            print(row)
+        reader = csv.reader(csvfile)
+        next(reader)  # skip file header
+        for row in reader:
+            transform_row(row)
+            evidence.append(row[:-1])
+            labels.append(row.pop())
+    return evidence, labels
 
 
 def train_model(evidence, labels):
@@ -70,7 +76,13 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
+    neigh = KNeighborsClassifier(n_neighbors=1)
+    for value in evidence:
+        for sub_value in value:
+            if sub_value is None or math.isnan(sub_value):
+                print('bad ', sub_value)
+    # test = neigh.fit(evidence, labels)
+    # print(test.predict([[8, 117.5, 0, 0.0, 8, 104.5, 0.0, 0.016666667, 0.0, 0.0, 10, 1, 1, 2, 2, 1, 0]]))
 
 
 def evaluate(labels, predictions):
@@ -89,6 +101,55 @@ def evaluate(labels, predictions):
     actual negative labels that were accurately identified.
     """
     raise NotImplementedError
+
+
+def transform_row(row):
+    row[0] = int(row[0])
+    row[1] = float(row[1])
+    row[2] = int(row[2])
+    row[3] = float(row[3])
+    row[4] = int(row[4])
+    row[5] = float(row[5])
+    row[6] = float(row[6])
+    row[7] = float(row[7])
+    row[8] = float(row[8])
+    row[9] = float(row[9])
+    row[10] = transform_month(row[10])
+    row[11] = int(row[11])
+    row[12] = int(row[12])
+    row[13] = int(row[13])
+    row[14] = int(row[14])
+    row[15] = 1 if row[15] == 'Returning_Visitor' else 0
+    row[16] = 1 if row[16] == 'TRUE' else 0
+    row[17] = 1 if row[17] == 'TRUE' else 0
+
+
+def transform_month(month):
+    match month:
+        case 'Jan':
+            return 0
+        case 'Feb':
+            return 1
+        case 'Mar':
+            return 2
+        case 'Apr':
+            return 3
+        case 'May':
+            return 4
+        case 'Jun':
+            return 5
+        case 'Jul':
+            return 6
+        case 'Aug':
+            return 7
+        case 'Sep':
+            return 8
+        case 'Oct':
+            return 9
+        case 'Nov':
+            return 10
+        case 'Dec':
+            return 11
 
 
 if __name__ == "__main__":
