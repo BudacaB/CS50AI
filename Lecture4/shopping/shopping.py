@@ -1,5 +1,4 @@
 import csv
-import math
 import sys
 
 from sklearn.model_selection import train_test_split
@@ -77,12 +76,8 @@ def train_model(evidence, labels):
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
     neigh = KNeighborsClassifier(n_neighbors=1)
-    for value in evidence:
-        for sub_value in value:
-            if sub_value is None or math.isnan(sub_value):
-                print('bad ', sub_value)
-    # test = neigh.fit(evidence, labels)
-    # print(test.predict([[8, 117.5, 0, 0.0, 8, 104.5, 0.0, 0.016666667, 0.0, 0.0, 10, 1, 1, 2, 2, 1, 0]]))
+    neigh.fit(evidence, labels)
+    return neigh
 
 
 def evaluate(labels, predictions):
@@ -100,7 +95,23 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    predictions = predictions.tolist()  # convert from numpy array
+    correct_positive = 0
+    total_positive = 0
+    correct_negative = 0
+    total_negative = 0
+    for label, prediction in zip(labels, predictions):
+        if label == 1 and prediction == 1:
+            correct_positive += 1
+        if label == 1:
+            total_positive += 1
+        if label == 0 and prediction == 0:
+            correct_negative += 1
+        if label == 0:
+            total_negative += 1
+    sensitivity = correct_positive / total_positive
+    specificity = correct_negative / total_negative
+    return sensitivity, specificity
 
 
 def transform_row(row):
@@ -136,7 +147,7 @@ def transform_month(month):
             return 3
         case 'May':
             return 4
-        case 'Jun':
+        case 'June':
             return 5
         case 'Jul':
             return 6
