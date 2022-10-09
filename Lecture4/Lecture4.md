@@ -208,7 +208,7 @@ h(advertising)
       - the updated value of Q(s, a) is equal to the previous value of Q(s, a) in addition to some updating value - this value is determined as the difference between the new value and the old value, multiplied by α, a learning coefficient
       - when α = 1 the new estimate simply overwrites the old one. When α = 0, the estimated value is never updated - by raising and lowering α, you can determine how fast previous knowledge is being updated by new estimates
     - can be rewritten as Q(s, a) <- Q(s, a) + α((r + future reward estimate) - Q(s, a))
-      - new value estimate is composed of what reward did you just get from taking this action in this state, and what you can expect your future reward to be from this point forward
+      - new value estimate is composed of what reward (r) did you just get from taking this action in this state, and what you can expect your future reward to be from this point forward
     - can be rewritten as Q(s, a) <- Q(s, a) + α((r + max<sub>a'</sub>Q(s', a')) - Q(s, a))
       - take the maximum across all possible actions you could take next - which one will have the highest reward
     - sometimes the value of the future reward estimate can sometimes appear with a coefficient gamma that controls how much future rewards are valued - reward now vs reward later
