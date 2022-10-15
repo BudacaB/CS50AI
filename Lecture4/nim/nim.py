@@ -101,7 +101,8 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        return 0 if self.q.get((state, action)) is None else self.q.get((state, action))
+        tuple_state = tuple(state)
+        return 0 if self.q.get((tuple_state, action)) is None else self.q.get((tuple_state, action))
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
@@ -118,7 +119,8 @@ class NimAI():
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        raise NotImplementedError
+        new_value = old_q + self.alpha * (reward + future_rewards - old_q)
+        self.q[(tuple(state), action)] = new_value
 
     def best_future_reward(self, state):
         """
@@ -130,7 +132,17 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        tuple_state = tuple(state)
+        actions = Nim.available_actions(tuple_state)
+        if len(actions) == 0:
+            return 0
+        max_reward = -1
+        for action in actions:
+            if (tuple_state, action) in self.q and self.q[(tuple_state, action)] > max_reward:
+                max_reward = self.q[(tuple_state, action)]
+            elif (tuple_state, action) not in self.q and max_reward < 0:
+                max_reward = 0
+        return max_reward
 
     def choose_action(self, state, epsilon=True):
         """
@@ -147,8 +159,21 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
-
+        tuple_state = tuple(state)
+        actions = Nim.available_actions(tuple_state)
+        action_to_take = None
+        if epsilon:
+            action_to_take = (0, 0)  # TODO
+        else:
+            max_reward = -1
+            for action in actions:
+                if (tuple_state, action) in self.q and self.q[(tuple_state, action)] > max_reward:
+                    max_reward = self.q[(tuple_state, action)]
+                    action_to_take = action
+                elif (tuple_state, action) not in self.q and max_reward < 0:
+                    max_reward = 0
+                    action_to_take = action_to_take
+        return action_to_take
 
 def train(n):
     """
