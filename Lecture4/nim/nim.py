@@ -161,19 +161,26 @@ class NimAI():
         """
         tuple_state = tuple(state)
         actions = Nim.available_actions(tuple_state)
-        action_to_take = None
+        best_action_to_take = self.choose_best_action(tuple_state, actions)
+        random_action_to_take = random.choice(list(actions))
+        epsilon_choice = random.choices([best_action_to_take, random_action_to_take], weights=(1-epsilon, epsilon), k=1)
         if epsilon:
-            action_to_take = (0, 0)  # TODO
+            return epsilon_choice[0]
         else:
-            max_reward = -1
-            for action in actions:
-                if (tuple_state, action) in self.q and self.q[(tuple_state, action)] > max_reward:
-                    max_reward = self.q[(tuple_state, action)]
-                    action_to_take = action
-                elif (tuple_state, action) not in self.q and max_reward < 0:
-                    max_reward = 0
-                    action_to_take = action_to_take
-        return action_to_take
+            return best_action_to_take
+
+    def choose_best_action(self, tuple_state, actions):
+        best_action_to_take = None
+        max_reward = -1
+        for action in actions:
+            if (tuple_state, action) in self.q and self.q[(tuple_state, action)] > max_reward:
+                max_reward = self.q[(tuple_state, action)]
+                best_action_to_take = action
+            elif (tuple_state, action) not in self.q and max_reward < 0:
+                max_reward = 0
+                best_action_to_take = action
+        return best_action_to_take
+
 
 def train(n):
     """
