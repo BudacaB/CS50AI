@@ -8,6 +8,7 @@ TEST_SIZE = 0.4
 
 
 def main():
+
     # Check command-line arguments
     if len(sys.argv) != 2:
         sys.exit("Usage: python shopping.py data")
