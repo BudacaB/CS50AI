@@ -74,7 +74,7 @@ Artificial neural network:
 - how does it work:
   - start with a random choice of weights
   - repeat:
-    - calculate the gradient based on all the data points: direction that will lead to decreasing loss (ultimately the gradient is is a vector - a sequence of numbers)
+    - calculate the gradient based on all the data points: direction that will lead to decreasing loss (ultimately the gradient is a vector - a sequence of numbers)
     - update weights according to the gradient
 - what is expensive in this algorithm? - <b>all data points</b> - we can employ faster methods
 
@@ -98,7 +98,18 @@ Artificial neural network:
 - to keep this network connected between the two layers, we need to add more weights - e.g. each of four input nodes has four weights associated with each of the four outputs
 - e.g. you might not care just whether it's raining or not raining, there might be multiple categories of weather that you would like to categorize the weather into
   - with just a single output variable you can do a binary classification, with multiple output variables, you might be able to use each one to predict something a little different (see weather.png)
+    - here you might imagine four NNs with three inputs each
 - this was sort of the idea of <b>supervised machine learning</b> - giving the NN a bunch of data, and the algo can use gradient descent to figure out what all the weights should be in order to create some sort of model that hopefully allows you a way to predict what you think the weather is going to be
 - NN have a lot of other applications as well, for example applying the same sort of idea to <b>reinforcement learning</b> - train some sort of agent to learn what action to take depending on what state it currently happens to be in
   - each of the input variables can represent some info about the state, and the output can be each of the various different actions that the agent can take
   - the outputs could model which action is better than other actions
+- possible limitations - just taking some linear combination of inputs and passing it into some sort of activation function
+  - when we do this in the case of binary classification we can only predict things that are linearly separable because of the linear combination of inputs and using that to define some decision boundary or threshold 
+  - we can predict a line that separates linearly (see linearnonlinear.png)
+  - but a single unit that is making a binary classification (aka <b>perceptron</b>) can't deal with a situation that is non-linear (see linearnonlinear.png)
+  - the <b>perceptron</b> is only capable of learning a linearly separable decision boundary
+  - the solution could be multilayer neural networks
+
+## Multilayer Neutral Network
+
+- artificial neural network with an input layer, an output layer, and at least one hidden layer
