@@ -27,7 +27,7 @@ Artificial neural network:
 - if you don't just want a purely binary classification, but allow for some in between real number values - there are a number of different function that can be used
   - e.g. <b>logistic sigmoid</b> (see logistic.png) - could provide a probability of rain of 0.8 for example
 - there are many other types of activation functions - an activation function just takes the output of the hypothesis function and figures out what the actual output should be - h(x<sub>1</sub>, x<sub>2</sub>) = g(w<subb>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub>)
-  - another popular one is <b>rectified linear unit</b> (ReLU) (see relu.png)
+  - another popular one is <b>rectified linear unit</b> (ReLU) - allows the output to be any positive value, if the value is negative, ReLU sets it to 0. (see relu.png)
 
 ## Neural Networks Structure
 
@@ -112,4 +112,57 @@ Artificial neural network:
 
 ## Multilayer Neutral Network
 
-- artificial neural network with an input layer, an output layer, and at least one hidden layer
+- artificial neural network with an input layer, an output layer, and at least one hidden layer (see multilayer.png)
+- it gives us the ability to model more complex functions - instead of having a single decision boundary (i.e. a single line dividing the red and blue dots), each of the hidden nodes can learn a different decision boundary, and we can combine them to figure out what the ultimate output is going to be
+- as you can begin to imagine more complex situations, you can imagine each of these nodes learning some useful property / feature of all the inputs, and you learning how to combine those features together in order to get the output
+- how do you train a NN that has hidden layers inside of it?
+  - you get values for all the inputs and what the value of the output should be (what the category is) - but the input data doesn't tell you what the values for the hidden nodes should be
+  - a strategy you could use - if you know what the error or the loss is on the output node, then based on what the weights leading up to it are, if one of these weights is higher than another, you can calculate an estimate for how much the error from the output node was due to what part of the previous hidden layer, which node
+  - in effect, based on the error from the output, you can back-propagate the error and figure out and estimate for what the error is for each of the nodes in the hidden layer
+
+### Backpropagation
+
+- algorithm for training neural networks with hidden layers
+- pseudocode for example on gradient descent with backpropagation:
+  - start with a random choice of weights
+  - repeat:
+    - calculate error for the output layer
+    - for each layer, starting with output layer, and moving inwards towards the earliest hidden layer:
+      - propagate error back one layer
+      - update weights
+  - this can be extended to any number of hidden layers, creating <b>deep neural networks</b>, which are NNs that have more than one hidden layer (see deepnn.png)
+- this is really the key algo that makes NNs possible - to take these multi-leveled structures and be able to train them depending on what the values of the weights are in order to figure out how it is that you should go about updating those weights in order to create some function, that is able to minimize the total amount of loss - to figure out some good setting of the weights that will take the inputs and translate into the output that we expect
+
+## Overfitting
+
+- generally happens when you fit too closely to the training data and as a result you don't generalize well to other situations as well
+- one risk with a NN that has many diff nodes is that you might over fit based on the input data - you might grow over reliant on certain nodes to calculate things just purely based on the input data, that doesn't allow you to generalize very well to the output
+- there are multiple techniques for dealing with overfitting
+
+### Dropout
+
+- temporarily removing units - selected at random - from a NN to prevent over-reliance on certain units (see dropout.png)
+- there are a number of diff ML libraries - NN libraries that you can use
+
+## TensorFlow
+
+- playground.tensorflow.org
+
+## Computer Vision
+
+- computational methods for analyzing and understanding digital images
+- you can look at an image as a grid of pixels, each with some sort of color
+  - each pixel can be represented as a number - on a 0 to 255 range - so it can be represented with 8 bits - black & white, or RGB with three numerical values
+  - with this each pixel would be a numerical value to be used to perform some sort of prediction task
+- you can imagine a NN with a lot of inputs - for each of the pixels - one, or three for a colored image
+  - they are connected to a deep NN which might take all the pixels and the output might be then ten neurons that would tell you what that digit might be (if you try to predict what digit was hand written for example)
+- there are some drawbacks
+  - a lot of different inputs
+  - by flattening everything into this structure of all the pixels, you lose access to a lot of the info about the structure of the image
+- you can introduce a couple of algos that allow you to take the image and extract some useful info
+
+## Image Convolution
+
+- applying a filter that adds each pixel value of an image to its neighbors, weighted according to a kernel matrix
+  - the purpose is to extract some sort of info out of an image - take a pixel and based on its neighboring pixels predict something like whether there's some sort of curve inside the image
+  - combining these various different features to enable them to say something meaningful about an image
