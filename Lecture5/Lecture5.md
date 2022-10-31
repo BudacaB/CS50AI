@@ -163,6 +163,9 @@ Artificial neural network:
 
 ## Image Convolution
 
-- applying a filter that adds each pixel value of an image to its neighbors, weighted according to a kernel matrix
+- applying a filter that adds each pixel value of an image to its neighbors, weighted according to a kernel matrix (see convolution.png - blue section)
   - the purpose is to extract some sort of info out of an image - take a pixel and based on its neighboring pixels predict something like whether there's some sort of curve inside the image
   - combining these various different features to enable them to say something meaningful about an image
+- you apply the kernel matrix to a section of the image - multiply each correspondent, add all of them and get a value for that section, then slide the kernel matrix on
+- this way you get a filtered version of the image
+- e.g. for edge detection this kernel matrix is usually used (see kernel.png)
