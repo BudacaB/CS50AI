@@ -169,3 +169,34 @@ Artificial neural network:
 - you apply the kernel matrix to a section of the image - multiply each correspondent, add all of them and get a value for that section, then slide the kernel matrix on
 - this way you get a filtered version of the image
 - e.g. for edge detection this kernel matrix is usually used (see kernel.png)
+
+### Pooling
+
+- some images are pretty big - pooling is reducing the size of an input by sampling from regions in the input
+
+### Max-pooling
+
+- pooling by choosing the maximum value in each region (see maxpooling.png)
+
+## Convolutional Neural Network (CNN)
+
+- neural networks that use convolution, usually for analyzing images
+- take an image and rather than putting it directly through the NN layers that you've seen before, start by applying a convolution step (see convolutionalnn.png)
+  - i.e. apply a number of image filters in order to get a <b>feature map</b> - usually you'll do this multiple times - each time extract some different relevant feature out of the image
+  - just like you can train NNs to learn the weights between particular units inside the NNs, you can also train NNs to learn what those filters should be to get he most useful / relevant info - their values / what setting of their values results in minimizing their loss function
+- these feature maps are still large - so you also apply a pooling step - reduce the size of these images by using <b>max-pooling</b> for example etc. (average pooling etc.)
+  - pooling will reduce the dimensions of the feature maps - smaller grids with fewer pixels -> fewer inputs and more robust against potential movements of particular values
+- then you flatten out the values - flattening step - putting them into a conventional NN
+  - you can even add a convolution & pooling step again and so on - first step maybe you learn vey low-level features like edges, curves and shapes -> then high-level features in the 2nd step, like objects
+  - at the end pass the results to a deep NN for binary classification, or multiple categories or various different tasks
+
+## Recurrent Neural Networks
+
+- <b>feed-forward neural networks</b> - neural network that have connections only in one direction (see ffnndiagram.png)
+  - this has some limitations - fixed shape (e.g. number of neurons) and a fixed shape for the output (e.g. fixed number of neurons in the output layer)
+- <b>recurrent neural network</b> - generates output that gets fed back into itself as input for future runs of that network (see recurrent.png)
+  - this allows the network to maintain some sort of state - store info that can be used on future runs
+  - particularly helpful when dealing with sequences of data - one-to-many relationship for inputs to outputs (e.g. imagine analyze output of 'group of people walking in front of a building') versus a vanilla NN where it's one-to-one
+  - e.g. for video - a sequence of images, a recurrent NN can be used that gets multiple inputs - on each step it gets the latest input, plus the info from the previous network iterations (see recurrent_multiple_inputs.png) - many-to-many
+    - another example are translations (see recurrent_multiple_outputs.png)
+- there are a number of diff types of these sorts of recurrent NNs - one of the most popular - <b>Long short-term memory neural network</b> (LSTM)
