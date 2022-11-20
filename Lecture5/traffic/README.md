@@ -1,4 +1,4 @@
-Experimenting with the Convolutional Neural Network configuration, I noticed that adding convolutional layers bring a considerable increase
+Experimenting with the Convolutional Neural Network configuration, I noticed that adding convolutional layers brings a considerable increase
 in accuracy, but this does run into diminishing returns pretty quick beyond a point. Also, an increase in the number of filters seems to lead to
 an increase in accuracy as well.
 
