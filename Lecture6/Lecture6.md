@@ -54,3 +54,66 @@ VP (verb phrase) -> V | V NP
 etc.
 
 S (sentence) -> NP VP (see syntactictree.png)
+
+### n-gram
+
+- a contiguous sequence of <em>n</em> items from a sample of text
+
+### character n-gram
+
+- a contiguous sequence of <em>n</em> characters from a sample of text
+
+### word n-gram
+
+- a contiguous sequence of <em>n</em> words from a sample of text
+
+### unigram
+
+- a contiguous sequence of 1 item from a sample of text
+
+### bigram
+
+- a contiguous sequence of 2 items from a sample of text
+
+### trigram
+
+- a contiguous sequence of 1 item from a sample of text
+
+E.g. what are the trigrams that we can extract from this sentence:
+
+“How often have I said to you that when you have eliminated the impossible whatever remains, however improbable, must be the truth?”
+
+- the AI might've not seen this sentence before, but it might have a seen a trigram like e.g. 'to you that'
+
+### tokenization
+
+- the task of splitting a sequence of characters into pieces (tokens)
+
+### word tokenization
+
+- the task of splitting a sequence of characters into words
+
+## Markov Models
+
+- recall that it refers to some sequence of events that happen one time step after one time step, where every unit has some ability
+to predict what the next unit is going to be (or maybe the past two units predict what the next unit is going to be, or the past three etc.)
+- you can use a Markov Model and apply it to language for a very naive and simple approach, trying to generate natural language - getting the AI to be able to speak English like text
+- how it's going to work - come up with some probability distribution - given two words, what is the probability distribution over what the third word could possibly be based on all the data
+- if you keep doing this, your Markov Model can effectively start to generate text that was not in the original corpus, but that sounds kind'a like the original corpus
+
+
+## Text Categorization
+
+- really a classification problem - e.g. decide where an email belongs - inbox or spam, based on words that show up in the email
+  - e.g. analyse if a text has a positive or negative sentiment for reviews (see reviews.png)
+
+### bag-of-words model
+
+- model that represents text as an unordered collection of words - you don't care about order - good for sentiment classifications
+
+## Naive Bayes (see bayesrule.png)
+
+- another well suited approach for classification on positive / negative sentiment, or just trying to categorize some text in two possible categories
+- 
+
+
