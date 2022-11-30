@@ -111,9 +111,22 @@ to predict what the next unit is going to be (or maybe the past two units predic
 
 - model that represents text as an unordered collection of words - you don't care about order - good for sentiment classifications
 
-## Naive Bayes (see bayesrule.png)
+## Naive Bayes
 
 - another well suited approach for classification on positive / negative sentiment, or just trying to categorize some text in two possible categories
+- based on Bayes' Rule (see bayesrule.png)
+- calculate P(positive) or P(negative) - for example given 'My grandson loved it!' -> P(positive | 'My grandson loved it!')
+  - P(positive | 'my', 'grandson', 'loved', 'it') - treat it as separate words
+  - this <b>equals</b> P('my', 'grandson', 'loved', 'it' | positive) P(positive) / P('my', 'grandson', 'loved', 'it')
+  - the denominator will be the same whether we look at positive or negative messages
+    - then instead of equal to the above expression, you can say it's <b>proportional</b> just to P('my', 'grandson', 'loved', 'it' | positive) P(positive)
+    - instead if getting the exact probability, you will figure out what the probability is proportional to and at the end you have to normalize the probability distribution - make sure it ultimately sums up to 1
+  - now you can really calculate this as a joint probability of all of these things happening
+    - P('my', 'grandson', 'loved', 'it' | positive) P(positive) -> is proportional to P(positive, 'my', 'grandson', 'loved', 'it')
+  - calculating joint probabilities means multiplying all the conditional probabilities - e.g. P(a, b, c) -> P(a) * P(b | a) * P(c | a, b) etc.
+  - this could get complicated, and this is where the 'naive' part comes in - you will assume that for example these words are going to effectively be independent of each other, if you know that it's already a positive message
+    - basically it wouldn't matter, if it's a positive message, it doesn't change the probability that the word 'grandson' is in the message, if you know that the word 'loved' is in the message
+    - that might not necessarily be true in practice, but you assume it to simplify the model, and it turns out that that simplification still gets you pretty good results
+      - so you assume that the probability of all those words showing up, depends only on whether it's positive or negative
+- ultimately you can say that P(positive | 'my', 'grandson', 'loved', 'it') is proportional to P(positive, 'my', 'grandson', 'loved', 'it') and <b>naively proportional</b> to P(positive)P('my' | positive)P('grandson' | positive)P('loved' | positive)P('it' | positive)
 - 
-
-
