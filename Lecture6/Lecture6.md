@@ -129,4 +129,15 @@ to predict what the next unit is going to be (or maybe the past two units predic
     - that might not necessarily be true in practice, but you assume it to simplify the model, and it turns out that that simplification still gets you pretty good results
       - so you assume that the probability of all those words showing up, depends only on whether it's positive or negative
 - ultimately you can say that P(positive | 'my', 'grandson', 'loved', 'it') is proportional to P(positive, 'my', 'grandson', 'loved', 'it') and <b>naively proportional</b> to P(positive)P('my' | positive)P('grandson' | positive)P('loved' | positive)P('it' | positive)
-- 
+  - you can calculate these terms - given some data available
+    - e.g. P(positive) = number of positive samples / number of total samples
+    - e.g. P('loved' | positive) = number of positive samples with 'loved' / number of positive samples
+  - P(positive)P('my' | positive)P('grandson' | positive)P('loved' | positive)P('it' | positive) and P(negative)P('my' | negative)P('grandson' | negative)P('loved' | negative)P('it' | negative) can be resolved to (see naivebayes.png)
+  - these two values should be treated as a probability distribution, and you need to normalize them - i.e. sum them up, and then divide each value by the total - so that both of these values sum up to 1
+  - you don't only get a classification, but also a probability for confidence - so Naive Bayes can achieve this just by using this 'bag of words' model
+- one potential drawback is what happens if zeroes are inside this data somewhere - e.g. a word has never showed up inside you data for 'positive'
+  - you need to make sure to never multiply by a zero
+
+### Additive smoothing
+
+- adding a value α to each value in your distribution to smooth out the data
