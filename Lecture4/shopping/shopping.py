@@ -109,7 +109,6 @@ def load_data(filename):
             row[17] = 1 if row[17] == 'TRUE' else 0
             evidence.append(row[:-1])
             labels.append(row.pop())
-    print(evidence[0])
     return evidence, labels
 
 
