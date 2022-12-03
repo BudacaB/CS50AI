@@ -141,3 +141,66 @@ to predict what the next unit is going to be (or maybe the past two units predic
 ### Additive smoothing
 
 - adding a value α to each value in your distribution to smooth out the data
+
+### Laplace smoothing
+
+- adding 1 to each value in our distribution: pretending we've seen each value one more time than we actually have
+
+## Information retrieval
+
+- the task of finding relevant documents in response to a user query
+
+### Topic modeling
+
+- models for discovering the topics for a set of documents
+
+### Term frequency
+
+- number of times a term appears in document
+
+### Function words
+
+- words that have little meaning on their own, but are used to grammatically connect other words - e.g. am, by, do, is, which, with, yet, the etc.
+- the good part is that this is a pretty much fixed list of words in any lang
+
+### Content words
+
+- words that carry meaning independently
+- even if they are not function words, some might still be very relevant - e.g. 'holmes' will come up most often in Holmes stories
+- however you want to know the words that apper most in one story, and not in the others - to figure out what the story is about
+
+### Inverse document frequency
+
+- measure of how common or rare a word is across documents (see idf.png)
+  - with this formula, if 'holmes' shows up in all the docs, then the result of the division will be 1 and log of 1 is 0
+  - so if 'holmes' shows up in all the docs, it has an inverse document frequency of 0 - i.e. how rare does this word show up
+
+### tf-idf
+
+- ranking of what words are important in a document by multiplying term frequency (TF) by inverse document frequency (IDF)
+
+## Semantics
+
+- you are starting to go into the world of semantics - what it is that words actually mean when talking about lang
+- now you don't think about a sample of text as a bag of words anymore, now you care what it is that these words actually mean, how it is these words relate to each other and in particular how you can extract info out of that text
+
+### Information extraction
+
+- the task of extracting knowledge from documents
+- e.g. how can you extract when Facebook and Amazon were founded from two text samples from magazines which describe them
+- this can be done looking for templates or patterns - things that happen to show up across multiple diff docs and which can give some sense as to what the info can mean
+  - e.g. 'when Facebook / Amazon was founded in 2004 / 1994,'
+  - these two templates give you a mechanism to extract info - 'When {company} was founded in {year},'
+  - other e.g. 'The {book} was written by {author}' etc.
+- given such templates AI can for example search the web, or a big corpus of docs etc. looking for templates that match and extract that info
+- this would require you to figure out and write these templates - this type of method isn't going to be able to extract all the info due to small differences
+  - instead of giving the AI templates, you can give AI the data - e.g. tell the AI that FB was found in 2004, and Amazon was founded in 1994 - and then set the AI loose on the web
+  - now the AI can begin to look for where do FB and 2004 show up together, where do Amazon and 1994 show up together -> and then discover the templates for itself
+  - the above templates can be figured out in this manner and then tried for others as well - this ends up being like an automated template generation
+- this works in still pretty limited contexts tied to the templates that it can generate
+- thinking about semantics, the better solution would be some way to be able to come up with definitions for all words, being able to relate all words in the dictionary to each other - you need some representation of what it is that words mean
+
+## WordNet
+
+- one approach is this famous dataset called WordNet - human curated - a bunch of words and their definition, their various different senses, and how those words relate to one another
+- 
