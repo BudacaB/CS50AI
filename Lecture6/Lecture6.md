@@ -203,4 +203,68 @@ to predict what the next unit is going to be (or maybe the past two units predic
 ## WordNet
 
 - one approach is this famous dataset called WordNet - human curated - a bunch of words and their definition, their various different senses, and how those words relate to one another
-- 
+- researchers have also curated relationships between these various different words
+- this however doesn't scale particularly well however
+
+## Word Representation
+
+- so far you've defined a word through a sentence that explains what that word is - but you need some way to represent the meaning of a word so that the AI can do something useful with it
+- throughout the course you've seen that when you want the AI to represent something, it can be helpful having the AI represent it using number
+  - e.g. win / lose / draw in a game as 1, -1, or 0; turn data into a vector of features with a bunch of numbers etc.
+  - if you ever want to pass words into a NN - e.g. given some word translate this sentence into another sentence, or do interesting classifications on individual words etc. - you need some representation of words just in terms of vectors
+  - using individual numbers to define the meaning of a word
+  - e.g. - encode 'He wrote a book.':
+    - he [1, 0, 0, 0]
+    - wrote [0, 1, 0, 0]
+    - a [0, 0, 1, 0]
+    - book [0, 0, 0, 1]
+
+### one-hot representation
+
+- representation of meaning as a vector with a single 1, and with other values as 0
+- this is practical for only a few words, otherwise the vector would be huge
+- another more subtle problem - the vector should represent meaning in a way that you can extract useful info
+  - e.g. having 'He wrote a book.' and 'He authored a novel.' - 'wrote' and 'authored', 'book' and 'novel' are going to be totally different vectors that have nothing to do with eachother
+    - wrote [0, 1, 0, 0, 0, 0, 0, 0, 0]
+    - authored [0, 0, 0, 0, 1, 0, 0, 0, 0]
+    - book [0, 0, 0, 0, 0, 0, 1, 0, 0]
+    - novel [0, 0, 0, 0, 0, 0, 0, 0, 1]
+  - you would like for 'wrote' and 'authored' to have vectors that are similar, same for 'book' and 'novel' - because they have similar meaning
+
+### distributed representation
+
+- representation of meaning distributed across multiple values
+- same 'He wrote a book.', bigger vectors but less than for a one-hot representation approach total:
+  - [-0.34, -0.08, 0.02, -0.18, …] (he)
+  - [-0.27, 0.40, 0.00, -0.65, …] (wrote)
+  - [-0.12, -0.25, 0.29, -0.09, …] (a)
+  - [-0.23, -0.16, -0.05, -0.57, …] (book)
+- this is going to be the goal of a lot of what the statistical machine learning approach to natural language processing is about - using these vector representations of words
+- but how you define a word as just as a bunch of sequences of numbers, what does it mean? - a famous quote tries to answer this, from a British linguist:
+  - 'You shall know a word by the company that it keeps' (J. R. Firth, 1957)
+- you can define a word in terms of the words that show up around it, based on it's context
+  - for ___ he ate - in English, it might be 'lunch', 'dinner' etc.
+  - in order to define what does 'lunch' or 'dinner' mean, you can define it in terms of what words happen to show up around it - if a word shows up in a particular context and another word happens to show up in very similar contexts, then those two words are probably related
+
+## word2vec
+
+- model for generating word vectors
+- you give it a corpus of docs - it will produce vectors for each word
+- it has a few ways of doing this
+
+### skip-gram architecture
+
+- NN architecture for predicting context words given a target word (see sgarchitecture.png)
+  - one input cell for each word - the NN can be trained
+  - it will figure out context words using the same methods seen before - back-propagating the error from the context word back through this NN
+  - what you get, for example using the single layer of hidden nodes - for every single one of the input words - you get 5 edges, each of which has a weight to each of the five hidden nodes - i.e. five numbers that are going to represent the target word
+  - the number of hidden nodes can be customized - the resulting values will be the numerical vector representation of that word
+  - the idea is that if two words are similar, the values chosen in the vectors, the numerical values for the weights of these edges, are probably going to be similar
+    - high level, given a bunch of words (see words.png), you start with the random initialisation of weights, over time as you train the NN, you adjust the weights, the vector representation of each of these words so that gradually words that show up in similar context, grow close to one another, and words that show up in different contexts get further away (see words_weighted.png)
+- now a very interesting part - because these are vectors, you can do math with them and calculate the relationship between various different words (see vector_diff.png)
+  - e.g. two words - 'man' and 'king' - you can take these two vectors and subtract them from each other and get another vector (i.e. king - man)
+    - this will tell you what you need to do to get from one word to the other
+    - you can also take this new vector, and add it to another vector of a word -> e.g. (king - man) + woman, what will you get around this new vector?
+      - e.g. with vectors.py - closest_word(words['king'] - words['man'] + words['woman']) -> 'queen'
+      - e.g. with vectors.py - closest_word(words['paris'] - words['france'] + words['england']) -> 'london'
+      - 
