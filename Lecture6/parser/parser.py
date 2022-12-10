@@ -15,8 +15,8 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> N V | NP VP | NP VP Conj NP VP | NP VP Conj VP
-NP -> N | Det N | P N | P Det Adj N | Det Adj N | P N | P Det N | Det Adj Adj Adj N
+S -> N V | NP VP | NP VP Conj NP VP | NP VP Conj VP | NP VP P NP VP
+NP -> N | Det N | P N | P Det Adj N | Det Adj N | P N | P Det N | Det Adj Adj Adj N | P Det Adj Adj N
 VP -> V | V NP | V NP NP | Adv V NP | V NP Adv | V Adv| V NP NP NP
 """
 
@@ -80,12 +80,11 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    # print(tree)
-    # print(tree.label())
-    # for lil_tree in tree.subtrees():
-    #     if lil_tree.label() == 'NP':
-    #         print(lil_tree.leaves())
-    return []
+    np_chunks = []
+    for subtree in tree.subtrees():
+        if subtree.label() == 'NP':
+            np_chunks.append(subtree)
+    return np_chunks
 
 
 if __name__ == "__main__":
