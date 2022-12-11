@@ -1,3 +1,6 @@
+import os
+import string
+
 import nltk
 import sys
 
@@ -6,7 +9,6 @@ SENTENCE_MATCHES = 1
 
 
 def main():
-
     # Check command-line arguments
     if len(sys.argv) != 2:
         sys.exit("Usage: python questions.py corpus")
@@ -48,7 +50,13 @@ def load_files(directory):
     Given a directory name, return a dictionary mapping the filename of each
     `.txt` file inside that directory to the file's contents as a string.
     """
-    raise NotImplementedError
+    files = {}
+    for filename in os.listdir(directory):
+        file_text = open(os.path.join(directory, filename), 'r')
+        files[filename] = file_text.read()
+        file_text.close()
+        break
+    return files
 
 
 def tokenize(document):
@@ -59,7 +67,16 @@ def tokenize(document):
     Process document by coverting all words to lowercase, and removing any
     punctuation or English stopwords.
     """
-    raise NotImplementedError
+    processed_document = []
+    processed_document.extend([
+        word.lower() for word in
+        nltk.word_tokenize(document)
+    ])
+    for word in processed_document:
+        for c in word:
+            if c in string.punctuation:
+                word = word.replace(c, '')
+    print(processed_document)
 
 
 def compute_idfs(documents):
