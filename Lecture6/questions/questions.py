@@ -68,15 +68,14 @@ def tokenize(document):
     punctuation or English stopwords.
     """
     processed_document = []
+    for character in string.punctuation:
+        document = document.replace(character, '')
     processed_document.extend([
         word.lower() for word in
         nltk.word_tokenize(document)
+        if word not in nltk.corpus.stopwords.words("english")
     ])
-    for word in processed_document:
-        for c in word:
-            if c in string.punctuation:
-                word = word.replace(c, '')
-    print(processed_document)
+    return processed_document
 
 
 def compute_idfs(documents):
