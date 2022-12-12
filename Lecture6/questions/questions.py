@@ -1,3 +1,4 @@
+import math
 import os
 import string
 
@@ -55,7 +56,6 @@ def load_files(directory):
         file_text = open(os.path.join(directory, filename), 'r')
         files[filename] = file_text.read()
         file_text.close()
-        break
     return files
 
 
@@ -86,7 +86,21 @@ def compute_idfs(documents):
     Any word that appears in at least one of the documents should be in the
     resulting dictionary.
     """
-    raise NotImplementedError
+    idfs_dict = {}
+    number_of_docs = len(documents.keys())
+    for key, value in documents.items():
+        seen = set()
+        for word in value:
+            if word not in seen:
+                if word in idfs_dict:
+                    idfs_dict[word] = idfs_dict[word] + 1
+                    seen.add(word)
+                elif word not in idfs_dict:
+                    idfs_dict[word] = 1
+                    seen.add(word)
+    for key, value in idfs_dict.items():
+        idfs_dict[key] = math.log(number_of_docs / value)
+    return idfs_dict
 
 
 def top_files(query, files, idfs, n):
