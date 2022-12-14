@@ -61,7 +61,7 @@ def load_data(filename):
     """
     evidence = []
     labels = []
-    with open(filename, newline='') as csvfile:
+    with open(filename) as csvfile:
         reader = csv.reader(csvfile)
         next(reader)  # skip file header
         for row in reader:
@@ -137,7 +137,6 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    predictions = predictions.tolist()  # convert from numpy array
     correct_positive = 0
     total_positive = 0
     correct_negative = 0
