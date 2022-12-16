@@ -69,7 +69,7 @@ def tokenize(document):
     """
     processed_document = []
     for character in string.punctuation:
-        document = document.replace(character, '')
+        document = document.replace(character, ' ')
     processed_document.extend([
         word.lower() for word in
         nltk.word_tokenize(document)
@@ -88,9 +88,9 @@ def compute_idfs(documents):
     """
     idfs_dict = {}
     number_of_docs = len(documents.keys())
-    for key, value in documents.items():
+    for doc, words in documents.items():
         seen = set()
-        for word in value:
+        for word in words:
             if word not in seen:
                 if word in idfs_dict:
                     idfs_dict[word] = idfs_dict[word] + 1
@@ -98,8 +98,8 @@ def compute_idfs(documents):
                 elif word not in idfs_dict:
                     idfs_dict[word] = 1
                     seen.add(word)
-    for key, value in idfs_dict.items():
-        idfs_dict[key] = math.log(number_of_docs / value)
+    for word, appearances in idfs_dict.items():
+        idfs_dict[word] = math.log(number_of_docs / appearances)
     return idfs_dict
 
 
@@ -112,15 +112,15 @@ def top_files(query, files, idfs, n):
     """
     file_ranks_dict = {}
     file_ranks_list = []
-    for key, value in files.items():
-        file_ranks_dict[key] = 0
+    for doc, words in files.items():
+        file_ranks_dict[doc] = 0
         for term in query:
-            word_count = len(list(filter(lambda word: word == term, value)))
+            word_count = len(list(filter(lambda word: word == term, words)))
             if word_count > 0:
-                file_ranks_dict[key] += word_count * idfs[term]
+                file_ranks_dict[doc] += word_count * idfs[term]
     sorted_ranks = {k: v for k, v in sorted(file_ranks_dict.items(), key=lambda item: item[1], reverse=True)}
-    for key, value in sorted_ranks.items():
-        file_ranks_list.append(key)
+    for doc, tf_idf in sorted_ranks.items():
+        file_ranks_list.append(doc)
     return file_ranks_list[0:n]
 
 
@@ -132,7 +132,13 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    raise NotImplementedError
+    sentence_ranks_dict = {}
+    for sentence, words in sentences.items():
+        sentence_ranks_dict[sentence] = 0
+        for term in query:
+            if term in words:
+                sentence_ranks_dict[sentence] += idfs[term]
+
 
 
 if __name__ == "__main__":

@@ -62,52 +62,53 @@ def load_data(filename):
     evidence = []
     labels = []
     with open(filename) as csvfile:
-        reader = csv.DictReader(csvfile)
+        reader = csv.reader(csvfile)
+        next(reader)  # skip file header
         for row in reader:
-            processed_row = []
-            processed_row.append(int(row['Administrative']))
-            processed_row.append(float(row['Administrative_Duration']))
-            processed_row.append(int(row['Informational']))
-            processed_row.append(float(row['Informational_Duration']))
-            processed_row.append(int(row['ProductRelated']))
-            processed_row.append(float(row['ProductRelated_Duration']))
-            processed_row.append(float(row['BounceRates']))
-            processed_row.append(float(row['ExitRates']))
-            processed_row.append(float(row['PageValues']))
-            processed_row.append(float(row['SpecialDay']))
-            match row['Month']:
+            row[0] = int(row[0])
+            row[1] = float(row[1])
+            row[2] = int(row[2])
+            row[3] = float(row[3])
+            row[4] = int(row[4])
+            row[5] = float(row[5])
+            row[6] = float(row[6])
+            row[7] = float(row[7])
+            row[8] = float(row[8])
+            row[9] = float(row[9])
+            match row[10]:
                 case 'Jan':
-                    processed_row.append(0)
+                    row[10] = 0
                 case 'Feb':
-                    processed_row.append(1)
+                    row[10] = 1
                 case 'Mar':
-                    processed_row.append(2)
+                    row[10] = 2
                 case 'Apr':
-                    processed_row.append(3)
+                    row[10] = 3
                 case 'May':
-                    processed_row.append(4)
+                    row[10] = 4
                 case 'June':
-                    processed_row.append(5)
+                    row[10] = 5
                 case 'Jul':
-                    processed_row.append(6)
+                    row[10] = 6
                 case 'Aug':
-                    processed_row.append(7)
+                    row[10] = 7
                 case 'Sep':
-                    processed_row.append(8)
+                    row[10] = 8
                 case 'Oct':
-                    processed_row.append(9)
+                    row[10] = 9
                 case 'Nov':
-                    processed_row.append(10)
+                    row[10] = 10
                 case 'Dec':
-                    processed_row.append(11)
-            processed_row.append(int(row['OperatingSystems']))
-            processed_row.append(int(row['Browser']))
-            processed_row.append(int(row['Region']))
-            processed_row.append(int(row['TrafficType']))
-            processed_row.append(1) if row['VisitorType'] == 'Returning_Visitor' else processed_row.append(0)
-            processed_row.append(1) if row['Weekend'] == 'TRUE' else processed_row.append(0)
-            evidence.append(processed_row)
-            labels.append(1) if row['Revenue'] == 'TRUE' else labels.append(0)
+                    row[10] = 11
+            row[11] = int(row[11])
+            row[12] = int(row[12])
+            row[13] = int(row[13])
+            row[14] = int(row[14])
+            row[15] = 1 if row[15] == 'Returning_Visitor' else 0
+            row[16] = 1 if row[16] == 'TRUE' else 0
+            row[17] = 1 if row[17] == 'TRUE' else 0
+            evidence.append(row[:-1])
+            labels.append(row.pop())
     return evidence, labels
 
 
