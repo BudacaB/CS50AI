@@ -1,15 +1,15 @@
+import math
+import os
+import string
+
 import nltk
 import sys
-import os
-import math
-import string
 
 FILE_MATCHES = 1
 SENTENCE_MATCHES = 1
 
 
 def main():
-
     # Check command-line arguments
     if len(sys.argv) != 2:
         sys.exit("Usage: python questions.py corpus")
@@ -141,23 +141,22 @@ def top_sentences(query, sentences, idfs, n):
     ranks_list.sort(key=lambda x: x[1], reverse=True)
     reduced_ranks_list = ranks_list[0:(n + 1)]
     # matching word measure comparison and adjustment
-    for index, sentence in enumerate(reduced_ranks_list):
+    for index, elem in enumerate(reduced_ranks_list):
         query_term_density = 0
         query_term_density_next = 0
-        if index + 1 < len(reduced_ranks_list) and sentence[1] == reduced_ranks_list[index + 1][1]:
-            sentence_length = len(sentences[sentence[0]])
-            for word in sentences[sentence[0]]:
+        if index + 1 < len(reduced_ranks_list) and elem[1] == reduced_ranks_list[index + 1][1]:
+            sentence_length = len(sentences[elem[0]])
+            for word in sentences[elem[0]]:
                 if word in query:
                     query_term_density += 1
             query_term_density = query_term_density / sentence_length
-            # next sentence
             sentence_length_next = len(sentences[reduced_ranks_list[index + 1][0]])
             for word in sentences[reduced_ranks_list[index + 1][0]]:
                 if word in query:
                     query_term_density_next += 1
             query_term_density_next = query_term_density_next / sentence_length_next
         if query_term_density < query_term_density_next:
-            temp_sentence = sentence
+            temp_sentence = elem
             reduced_ranks_list[index] = reduced_ranks_list[index + 1]
             reduced_ranks_list[index + 1] = temp_sentence
     for pair in reduced_ranks_list:
