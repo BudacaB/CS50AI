@@ -75,31 +75,30 @@ def load_data(filename):
             processed_row.append(float(row['ExitRates']))
             processed_row.append(float(row['PageValues']))
             processed_row.append(float(row['SpecialDay']))
-            match row['Month']:
-                case 'Jan':
-                    processed_row.append(0)
-                case 'Feb':
-                    processed_row.append(1)
-                case 'Mar':
-                    processed_row.append(2)
-                case 'Apr':
-                    processed_row.append(3)
-                case 'May':
-                    processed_row.append(4)
-                case 'June':
-                    processed_row.append(5)
-                case 'Jul':
-                    processed_row.append(6)
-                case 'Aug':
-                    processed_row.append(7)
-                case 'Sep':
-                    processed_row.append(8)
-                case 'Oct':
-                    processed_row.append(9)
-                case 'Nov':
-                    processed_row.append(10)
-                case 'Dec':
-                    processed_row.append(11)
+            if row['Month'] == 'Jan':
+                processed_row.append(0)
+            elif row['Month'] == 'Feb':
+                processed_row.append(1)
+            elif row['Month'] == 'Mar':
+                processed_row.append(2)
+            elif row['Month'] == 'Apr':
+                processed_row.append(3)
+            elif row['Month'] == 'May':
+                processed_row.append(4)
+            elif row['Month'] == 'June':
+                processed_row.append(5)
+            elif row['Month'] == 'Jul':
+                processed_row.append(6)
+            elif row['Month'] == 'Aug':
+                processed_row.append(7)
+            elif row['Month'] == 'Sep':
+                processed_row.append(8)
+            elif row['Month'] == 'Oct':
+                processed_row.append(9)
+            elif row['Month'] == 'Nov':
+                processed_row.append(10)
+            elif row['Month'] == 'Dec':
+                processed_row.append(11)
             processed_row.append(int(row['OperatingSystems']))
             processed_row.append(int(row['Browser']))
             processed_row.append(int(row['Region']))
